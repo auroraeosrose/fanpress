@@ -1,0 +1,160 @@
+<?php
+/**
+ * search.html - search form
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: search.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Search</h1>
+          <script type="text/javascript">
+            function showForm(value) {
+              document.getElementById('searchform0').style.display='none';
+              document.getElementById('searchform1').style.display='none';
+              document.getElementById('searchform2').style.display='none';
+              document.getElementById('searchform3').style.display='none';
+              if(value == '')
+              return;
+              var submitButton = new Array('Search Announcements', 'Search Users', 'Search Authors', 'Search Books');
+              document.getElementById('searchform' + value).style.display='block';
+              document.getElementById('searchsubmit').value=submitButton[value];
+            }
+          </script>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <form action="search.php" method="post">
+            <fieldset>
+              <legend>Search</legend>
+              <label for="searchtype">Search Type:</label>
+              <select id="searchtype" name="t" onchange="javascript:showForm(this.options[this.selectedIndex].value)">
+                <option value="" selected="selected">Choose a Type</option>
+                <option value="0">Announcements</option>
+                <option value="1">Users</option>
+                <option value="2">Authors</option>
+                <option value="3">Books</option>
+              </select>
+              <span>Choose a type of search to perform</span>
+              <label for="searchstring">Search For:</label>
+              <input id="searchstring" name="string" type="text" />
+              <span>Choose text to find</span>
+              <label for="searchbool">Boolean Search:</label>
+              <div>
+                <input id="searchbool" name="bool" type="checkbox" />
+              </div>
+              <span>Use boolean mode when searching</span>
+              <p>
+                Boolean Mode can use + to require a word, - to exlude a word, &lt; and &gt; to change word relevance value, () to group
+                sub-expressions, ~ to mark noise words (a word you might not want to exclude altogether, but it shouldn't be as important),
+                * as a wildcard so ba* will match ball and bat, and double quotes around literal strings.
+              </p>
+              <div id="searchform0">
+                <label for="announcetitle">Announcement Title:</label> <div><input id="announcetitle" name="atitle" type="checkbox" /></div><span>Search in title</span>
+                <label for="announcetext">Announcement Text:</label> <div><input id="announcetext" name="atext" type="checkbox" /></div><span>Search in text body</span>
+                <label for="announcedate">Announcement Date:</label> <span id="announcedate"><input name="amonth" type="text" maxlength="2"/>/<input name="aday" type="text" maxlength="2" />/<input name="ayear" type="text" maxlength="4" /></span><span>Search by month and/or day and/or year</span>
+              </div>
+              <div id="searchform1">
+                <label for="username">User Name:</label> <div><input id="username" name="uname" type="checkbox" /></div><span>Search in user names</span>
+                <label for="useremail">User Email:</label> <div><input id="useremail" name="uemail" type="checkbox" /></div><span>Search in email addresses</span>
+                <label for="userdate">Registration  Date:</label> <span id="userdate"><input name="umonth" type="text" maxlength="2"/>/<input name="uday" type="text" maxlength="2" />/<input name="uyear" type="text" maxlength="4" /></span><span>Search by month and/or day and/or year</span>
+              </div>
+              <div id="searchform2">
+                <label for="authorname">Author Name:</label> <div><input id="authorname" name="aname" type="checkbox" /></div><span>Search in author names</span>
+                <label for="authoremail">Author Contact:</label> <div><input id="authoremail" name="aemail" type="checkbox" /></div><span>Search in author contact email</span>
+                <label for="authorfile">Acceptance Story:</label> <div><input id="authorfile" name="afile" type="checkbox" /></div><span>Search in author application story</span>
+                <label for="authortext">Homepage Text:</label> <div><input id="authortext" name="atext" type="checkbox" /></div><span>Search in author profile text</span>
+                <label for="authordate">Registration  Date:</label> <span id="authordate"><input name="month" type="text" maxlength="2"/>/<input name="day" type="text" maxlength="2" />/<input name="year" type="text" maxlength="4" /></span><span>Search by month and/or day and/or year</span>
+              </div>
+              <div id="searchform3">
+                <label for="booktitle">Book Title:</label> <div><input id="booktitle" name="btitle" type="checkbox" /></div><span>Search book titles</span>
+                <label for="booksummary">Book Summary:</label> <div><input id="booksummary" name="bsummary" type="checkbox" /></div><span>Search book summaries</span>
+                <label for="bookauthor">Author Name:</label> <div><input id="bookauthor" name="bauthor" type="checkbox" /></div><span>Search author names</span>
+                <label for="bookupdate">Update Date:</label> <span id="bookupdate"><input name="bumonth" type="text" maxlength="2"/>/<input name="buday" type="text" maxlength="2" />/<input name="buyear" type="text" maxlength="4" /></span><span>Search update date by month and/or day and/or year</span>
+                <label for="bookpublish">Publish Date:</label> <span id="bookpublish"><input name="bpmonth" type="text" maxlength="2"/>/<input name="bpday" type="text" maxlength="2" />/<input name="bpyear" type="text" maxlength="4" /></span><span>Search publish date by month and/or day and/or year</span>
+                <label for="bookcat">Categories:</label>
+                <select id="bookcat" name="bcats[]" multiple="multiple">
+<?php while($row = $catlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$catlist->close()?>
+                </select><span>Filter by Category</span><br/>
+                <label for="bookchar">Characters:</label>
+                <select id="bookchar" name="bchar[]" multiple="multiple">
+<?php while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$charlist->close()?>
+                </select><span>Filter by Characters</span><br/>
+                <label for="bookgenre">Genres:</label>
+                <select id="bookgenre" name="bgenre[]" multiple="multiple">
+<?php while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$genrelist->close()?>
+                </select><span>Filter by Genres</span><br/>
+                <label for="booktypes">Types:</label>
+                <select id="booktypes" name="btype[]" multiple="multiple">
+<?php while($row = $typelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$typelist->close()?>
+                </select><span>Filter by Types</span><br/>
+                <label for="bookstyles">Styles:</label>
+                <select id="bookstyles" name="bstyle[]" multiple="multiple">
+<?php while($row = $stylelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$stylelist->close()?>
+                </select><span>Filter by Types</span><br/>
+                <label for="bookratings">Ratings:</label>
+                <select id="bookratings" name="brating[]" multiple="multiple">
+<?php while($row = $ratinglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$ratinglist->close()?>
+                </select><span>Filter by Ratings</span><br/>
+                <label for="bookwarnings">Warnings:</label>
+                <select id="bookwarnings" name="bwarning[]" multiple="multiple">
+<?php while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$warninglist->close()?>
+                </select><span>Filter by Warnings</span><br/>
+                <label for="booklength">Wordcount:</label>
+                <select id="booklength" name="bcount">
+                  <option value="0">All</option>
+                  <option value="1">&gt; 1000</option>
+                  <option value="2">&gt; 5000</option>
+                  <option value="3">&gt; 10,000</option>
+                  <option value="4">&gt; 25,000</option>
+                  <option value="5">&gt; 50,000</option>
+                  <option value="6">&gt; 75,000</option>
+                  <option value="7">&gt; 100,000</option>
+                </select><span>Filter by Number of Words</span><br/>
+                <label for="bookrank">Ranking:</label>
+                <select id="bookrank" name="brank">
+                  <option value="0">All</option>
+                  <option value="1">&gt; 1</option>
+                  <option value="2">&gt; 2</option>
+                  <option value="3">&gt; 3</option>
+                  <option value="4">&gt; 4</option>
+                  <option value="5">&gt; 5</option>
+                  <option value="6">&gt; 6</option>
+                  <option value="7">&gt; 7</option>
+                  <option value="8">&gt; 8</option>
+                  <option value="9">&gt; 9</option>
+                </select><span>Filter by Ranking</span><br/>
+                <label for="bookstatus">Status:</label>
+                <select id="bookstatus" name="bstatus">
+                  <option value="0">All</option>
+                  <option value="1">Unfinished</option>
+                  <option value="2">Completed</option>
+                </select><span>Filter by Status</span>
+              </div>
+              <input type="submit" value="Choose a Search Type" name="search" id="searchsubmit" />
+            </fieldset>
+          </form>

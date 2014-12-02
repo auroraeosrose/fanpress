@@ -1,0 +1,51 @@
+<?php
+/**
+ * adminfeaturednew.html - create a new featured story form
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminfeaturednew.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>New Featured Story</h1>
+          <ul>
+            <li>[<a href="featured.php?a=0" title="List current featured">List</a>]</li>
+            <li>[<strong title="Create new featured">New</strong>]</li>
+            <li>[<a href="featured.php?a=2" title="Edit existing featured">Edit</a>]</li>
+            <li>[<a href="featured.php?a=3" title="Delete featured">Delete</a>]</li>
+          </ul>
+          <p>Remember that all html tags will be stripped.  Use **bold** for bold and newlines for breaks in the text body.</p>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if(isset($preview)):?>
+          <h3><?php echo $f_title?></h3>
+          <div class="border">
+            <?php echo $f_summary?> 
+            <hr/>
+            <?php echo indent(format($f_text), 12)?> 
+            <span class="dark small"><?php echo date_format($f_date)?></span>
+          </div>
+<?php endif?>
+          <form action="featured.php" method="post">
+            <fieldset>
+              <legend>New Featured Story</legend>
+              <input type="hidden" value="1" name="a" />
+              <label for="booktitle">Book Title:</label> <input id="booktitle" name="btitle" type="text"  <?php if(!isset($noshow) and isset($_POST['btitle'])){echo ' value="'.$_POST['btitle'].'"';}?>/>
+              <label for="featuretitle">Feature Title:</label> <input id="featuretitle" name="title" type="text" <?php if(!isset($noshow) and isset($_POST['title'])){echo ' value="'.$_POST['title'].'"';}?>/>
+              <label for="featuresummary">Summary:</label> <textarea id="featuresummary" name="summary" cols="30" rows="5"><?php if(!isset($noshow) and isset($_POST['summary'])){echo $_POST['summary'];}?></textarea>
+              <label for="featuretext">Text:</label> <textarea class="text" id="featuretext" name="text" cols="30" rows="20"><?php if(!isset($noshow) and isset($_POST['text'])){echo $_POST['text'];}?></textarea>
+              <input type="submit" value="Create Featured" name="submit" <?php if(!isset($preview)):?>onclick="javascript:alert('Please Preview the Feature');return false;"<?php endif?> />
+              <input type="submit" value="Preview Featured" name="preview" />
+            </fieldset>
+          </form>

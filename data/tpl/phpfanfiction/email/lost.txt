@@ -1,0 +1,27 @@
+<?php
+/**
+ * lost.txt - tpl for lost password email
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: lost.txt,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>Someone using this email address has requested lost account information from <?php echo $config['domain']?> 
+
+<?php if(isset($_POST['name'])):?>
+Your login name is <?php echo $user['name']?> 
+<?php endif;if(isset($_POST['password'])):?>
+Your new password is <?php echo $newpass?> 
+You should login and change this to something easier to remember immediately.
+<?php endif?>
+
+Thank you,
+  Site Administration

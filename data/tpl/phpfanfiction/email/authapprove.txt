@@ -1,0 +1,28 @@
+<?php
+/**
+ * authapprove.txt - tpl for author approval email
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authapprove.txt,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+Someone using this email address has requested an author account at <?php echo $config['domain']?> 
+
+Your author name name is <?php echo $info['name']?> 
+
+We are pleased to inform you that your request has been approved - your account is now active.
+
+The following comments were left by the editor approving your account:
+<?php echo strip_tags($_POST['comment'])?> 
+
+Thank you,
+  Site Administration

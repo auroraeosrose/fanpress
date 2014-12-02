@@ -1,0 +1,55 @@
+<?php
+/**
+ * commentform.html - form to leave a comment
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: commentform.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($book, EXTR_PREFIX_ALL, 'b')?>
+          <h1>Add your Comments</h1>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <p class="dark">
+              <a href="book.php?id=<?php echo $b_bookid?>"><?php echo $b_title?></a> by <?php echo group_concat($b_author, $b_authorid, 'author.php?', 'id', $nest, ' and ');?> |
+              <a href="comment.php?id=<?php echo $b_bookid?>">Comments: <?php echo $b_comments?></a> | <?php echo rank_images($b_ranking, $nest)?><br/>
+              <span class="small">Published: <?php echo date_format($b_publish)?> | Updated: <?php echo date_format($b_update)?> | Chapters: <?php echo $b_chapters?> |
+              Words: <?php echo $b_wordcount?> | <?php if($b_completed == 1){echo 'Completed';}else{echo 'Unfinished';}?><br/>
+              <a href="browse.php?a=2&amp;cid=<?php echo $b_catid?>"><?php echo $b_catname?></a> :  <a href="browse.php?a=2&amp;tid=<?php echo $b_typeid?>"><?php echo $b_type?></a> :
+              <a href="browse.php?a=2&amp;sid=<?php echo $b_styleid?>"><?php echo $b_style?></a> : <?php echo group_concat($b_genre, $b_genreid, 'browse.php?a=2&amp;', 'gid', $nest, '/');?> :
+              <a href="browse.php?a=2&amp;rid=<?php echo $b_ratingid?>"><?php echo $b_rating?></a> : <?php echo group_concat($b_warning, $b_warningid, 'browse.php?a=2&amp;', 'wid', $nest, '/');?> :
+              <?php echo group_concat($b_character, $b_characterid, 'browse.php?a=2&amp;', 'chid', $nest, ', ');?></span><br/>
+              <?php echo $b_summary?> 
+          </p>
+          <form action="comment.php" method="post">
+            <fieldset>
+              <legend>Comment</legend>
+              <input type="hidden" name="a" value="1" />
+              <input type="hidden" name="id" value="<?php echo $b_bookid?>" />
+              <label for="commenttext">Comment:</label> <textarea id="commenttext" name="text" rows="10" cols="30"></textarea><span>Leave your story comments here</span><br/>
+              <label for="commentprivate">Private:</label> <div><input id="commentprivate" name="private" type="checkbox"  /></div><span>Private comments can only be viewed by the author(s)</span>
+              <label for="starranking">Rank Story:</label> <select id="starranking" name="rank"><option value="0">0</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+              <option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+              <option value="9">9</option><option value="10">10</option></select><span>Please rank the story, do not just leave it at zero</span>
+              <input type="submit" value="Submit Comment" name="submit" />
+            </fieldset>
+          </form>
+          <p>
+            Use the form above to add a comment to this book.  Do not flame the authors please, constructive criticism is appreciated.
+            You can choose to keep the comment private by checking the private box.  Then only the author(s) can read it.  An author may
+            leave a reply to your comment, so check back if you ask a question.  All html tags will be stripped.  You may use **around text** for bold.
+            You may rank the story from 0 to 10, with 10 being the highest quality fiction, and 0 being very poorly written.
+          </p>

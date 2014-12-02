@@ -1,0 +1,48 @@
+<?php
+/**
+ * register.html - tpl for registration form
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: register.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Register for an Account</h1>
+          <ul class="alphabet">
+            <li>[<a href="login.php?a=0" title="Login to your account">Login</a>]</li>
+            <li title="Register for an account">[<strong>Register</strong>]</li>
+            <li>[<a href="login.php?a=2" title="Retrieve lost password and/or username">Lost Password</a>]</li>
+            <li>[<a href="login.php?a=3" title="Confirm new account or email change.">Confirm</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <form action="login.php" method="post">
+            <fieldset>
+              <legend>Register</legend>
+              <input type="hidden" name="a" value="1" />
+              <input type="hidden" name="agree" value="1" />
+              <label for="registername">Name:</label> <input name="name" id="registername" type="text" /> <span>User names must be unique, and are case sensitive.  You will use this each time you log in, so choose something you can remember.</span>
+              <label for="registerpassword">Password:</label> <input id="registerpassword" name="password1" type="password"  /> <span>Passwords must be at least 6 letters long.  Acronyms work well.</span>
+              <label for="registerconfirm">Confirm:</label> <input id="registerconfirm" name="password2" type="password" /> <span>Please retype your password.</span>
+              <label for="registeremail">Email:</label> <input id="registeremail" name="email" type="text" /> <span>Your email address will not be released to other parties and is used solely for messages regarding the site.  Please make sure this account is accessible and not over-full.</span>
+              <label for="registerbirthday">Birthdate:</label> <span id="registerbirthday"><input name="month" type="text" maxlength="2"/>/<input name="day" type="text" maxlength="2" />/<input name="year" type="text" maxlength="4" /></span> <span>Type your birthdate in MM/DD/YYYY format.  This means January 5th is 01/05/2004.</span>
+              <input type="submit" value="Register" name="submit" />
+            </fieldset>
+          </form>
+          <p>
+            Please fill out all the fields above in order to register for an account.  Under the Children's Online Privacy Protection Act,
+            no web site operator can require, as a condition of participation in an activity, that a child under the age of 13 disclose more
+            information than is reasonably necessary.  Since this site has no completely credible means of getting parental consent you must
+            be 13 or older to register with the site.  That is why a birthdate is required.
+          </p>

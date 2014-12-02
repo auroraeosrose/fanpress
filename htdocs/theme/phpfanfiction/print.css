@@ -1,0 +1,83 @@
+/* Print version, plain jane */
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 12pt;
+  margin: 5%;
+  padding: 0;
+  padding-top: 60px;
+}
+/* Generic styles */
+.small {font-size: 10pt}
+.error {color: #CC0000}
+.dark {
+  color: #333333;
+  background-color: #CCCCCC}
+/* Turn off the sidebar, who cares */
+div#left {
+  display: none;
+  visibility: hidden;
+}
+/* Links */
+div#right a:link:after, div#right a:visited:after {
+   content: " (" attr(href) ") ";
+   font-size: 90%;
+}
+/* 60 pixel top bar */
+div#head {
+  position: absolute;
+  margin:0;
+  top:0;
+  left:0;
+  display:block;
+  width:100%;
+  height:60px;
+  z-index:5;
+  text-align: center;
+}
+/* bottom can be static, it is last */
+div#foot {
+  width:100%;
+  text-align: center;
+}
+/* Header content formatting */
+div#head a img {
+  border: none;
+}
+/* Hide the menu */
+div#head ul {
+  display: none;
+}
+/* Basic main area design */
+div#right h1, h2, h3, h4, h5, h6 {
+  text-align: center;
+}
+div#right p.paging {
+  display: none;
+}
+div#google{display:none}
+div#right p span {
+  display: block;
+  font-size: 10pt;
+  text-align: right;
+}
+div#right ul.alphabet {
+  list-style-type: none;
+  width: 100%;
+  padding: 5px;
+  text-align: center;
+}
+div#right ul.alphabet li {
+  display: inline;
+}
+div#right p.error {
+  font-size: 16pt;
+  color: #CC0000;
+  text-align: center;
+  border: none;
+}
+div#right ul.col li.end {
+  display: none;
+}
+div#right form {
+  display: none;
+  }

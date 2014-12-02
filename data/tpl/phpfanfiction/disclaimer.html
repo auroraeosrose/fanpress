@@ -1,0 +1,50 @@
+<?php
+/**
+ * disclaimer.html - Disclaimer text tpl
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: disclaimer.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Site Disclaimer</h1>
+          <ul>
+            <li>[<a href="login.php?a=0" title="Login to your account">Login</a>]</li>
+            <li title="Register for an account">[<strong>Register</strong>]</li>
+            <li>[<a href="login.php?a=2" title="Retrieve lost password and/or username">Lost Password</a>]</li>
+            <li>[<a href="login.php?a=3" title="Confirm new account or email change.">Confirm</a>]</li>
+          </ul>
+          <p>
+            This site allows you to post original fiction based on the characters and stories created by other individuals.
+            As a member of this site you will be bound by all posted rules and regulations regarding the site.  Failure
+            to follow the rules may result in disiplinary action including but not limited to deactivation of your account,
+            removal of materials, and removal of your account.
+          </p>
+          <p>
+            Your user account will provide the opportunity to request an author account, rate and comment on stories,
+            and keep a list of favorite stories and authors.  You agree not to post any abusive, obscene, vulgar, slanderous,
+            hateful, threatening, sexually-oriented or any other material that may violate any applicable laws.
+            While the administrators and moderators/editors of this site will attempt to remove or edit any generally objectionable material
+            as quickly as possible, it is impossible to review every message. Therefore you acknowledge that any material
+            placed on this site expresses the views and opinions of the author and not the administrators, moderators/editors or webmaster
+            and hence will not be held liable.
+          </p>
+          <p>
+            By clicking Register below you agree to be bound by these conditions.
+          </p>
+          <form id="agree" action="login.php" method="post">
+            <div>
+              <input type="hidden" value="1" name="agree" />
+              <input type="hidden" value="1" name="a" />
+              <h4><a href="javascript:document.getElementById('agree').submit()">Register</a></h4>
+            </div>
+          </form>
+          <h4 id="net4agree"><a href="login.php?a=1&amp;agree=1">Register</a></h4>

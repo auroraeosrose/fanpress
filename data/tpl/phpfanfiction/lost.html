@@ -1,0 +1,47 @@
+<?php
+/**
+ * lost.html - tpl for lost user information
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: lost.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Request Lost Information</h1>
+          <ul>
+            <li>[<a href="login.php?a=0" title="Login to your account">Login</a>]</li>
+            <li>[<a href="login.php?a=1" title="Register for an account">Register</a>]</li>
+            <li title="Retrieve lost password and/or username">[<strong>Lost Password</strong>]</li>
+            <li>[<a href="login.php?a=3" title="Confirm new account or email change.">Confirm</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <form action="login.php" method="post">
+            <fieldset>
+              <legend>Confirm</legend>
+              <input type="hidden" name="a" value="2" />
+              <label for="confirmemail">Email:</label><input id="confirmemail" name="email" type="text" /><span>Your email address.</span>
+              <label for="confirmname">Name:</label><div><input id="confirmname" name="name" type="checkbox" /></div><span>Request your username.</span>
+              <label for="confirmpassword">Password:</label><div><input id="confirmpassword" name="password" type="checkbox" /></div><span>Request a new password.</span>
+              <input type="submit" value="Send Lost Information" name="submit" />
+            </fieldset>
+          </form>
+          <p>
+            If you've lost or forgotten your username or password you may use the form above to request this information.
+            Please enter the email address you used when registering, or if you've changed the address since then, use the
+            address associated with your account.  Also choose whether you'd like to receive your username, your password,
+            or both.  Because passwords are stored encrypted, a new password will be created and sent to you.  If you cannot
+            access the email account you registered, you don't receive an email within 48 hours of using this form, or you
+            received an email with a new password and didn't request the information, please contact the administrator.
+          </p>

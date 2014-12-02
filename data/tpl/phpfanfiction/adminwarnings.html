@@ -1,0 +1,69 @@
+<?php
+/**
+ * adminwarnings.html - admin page to list/new/edit warnings
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminwarnings.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Manage Warnings</h1>
+          <ul>
+            <li>[<a href="library.php?a=0" title="Manage Categories">Categories</a>]</li>
+            <li>[<a href="library.php?a=1" title="Manage Ratings">Ratings</a>]</li>
+            <li>[<a href="library.php?a=2" title="Manage Styles">Styles</a>]</li>
+            <li>[<a href="library.php?a=3" title="Manage Types">Types</a>]</li>
+            <li>[<a href="library.php?a=4" title="Manage Characters">Characters</a>]</li>
+            <li>[<a href="library.php?a=5" title="Manage Genres">Genres</a>]</li>
+            <li>[<strong title="Manage Warnnings">Warnings</strong>]</li>
+          </ul>
+<?php if($total < 1):?>
+          <p class="error">
+            No Current Warnings
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php $num = 1; while($row = $warnings->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'w');?>
+            <li>
+              <span class="big"><span><?php echo $num++;?>.</span><?php echo $w_name?></span>
+              <span><a href="library.php?a=6&amp;id=<?php echo $w_id?>">Edit</a></span>
+              <span><a href="library.php?a=6&amp;did=<?php echo $w_id?>">Delete</a></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$warnings->close();?>
+          </ul>
+<?php endif;?>
+<?php if(isset($error)):?>
+          <p class="error" style="clear: both">
+            <?php echo $error?> 
+          </p>
+<?php endif;?>
+<?php if(isset($edit)):extract($edit, EXTR_PREFIX_ALL, 'w');?>
+          <form action="library.php" method="post" style="clear: both">
+            <fieldset>
+              <legend>Edit Warning</legend>
+              <input type="hidden" value="6" name="a" />
+              <input type="hidden" value="<?php echo $w_id?>" name="id" />
+              <label for="warningname">Name:</label> <input id="warningname" name="name" type="text" value="<?php echo $w_name?>" />
+              <label for="warningdesc">Description:</label> <textarea id="warningdesc" name="description" cols="30" rows="5"><?php echo $w_description?></textarea>
+              <input type="submit" value="Edit Warning" name="edit" />
+            </fieldset>
+          </form>
+<?php endif?>
+          <form action="library.php" method="post" style="clear: both">
+            <fieldset>
+              <legend>New Warning</legend>
+              <input type="hidden" value="6" name="a" />
+              <label for="warningname">Name:</label> <input id="warningname" name="name" type="text" />
+              <label for="warningdesc">Description:</label> <textarea id="warningdesc" name="description" cols="30" rows="5"></textarea>
+              <input type="submit" value="Create Warning" name="new" />
+            </fieldset>
+          </form>

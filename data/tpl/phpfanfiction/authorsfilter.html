@@ -1,0 +1,32 @@
+<?php
+/**
+ * authorsfilter.html - filter form for authors browse page
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authorsfilter.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <div class="box">
+            <form action="browse.php" method="get">
+              <fieldset>
+                <legend>Filter</legend>
+                <input type="hidden" name="a" value="3" />
+                <label for="filtercat">Categories:</label><br/>
+                <select id="filtercat" name="cid[]" multiple="multiple" class="multiple">
+<?php while($row = $catlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"<?php if(isset($_GET['cid']) and in_array($c_id, $_GET['cid'])){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile?>
+                </select>
+                <input type="submit" value="Filter" name="submit" />
+              </fieldset>
+            </form>
+          </div>

@@ -1,0 +1,30 @@
+<?php
+/**
+ * bookreject.txt - tpl for book rejection email
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: bookreject.txt,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+Someone using this email address has submitted a book at <?php echo $config['domain']?> 
+
+Your book title name is <?php echo $info['title']?> by <?php echo str_replace(':', ', ', $info['authors'])?> 
+
+We regret to inform you that your request has been rejected and your book submission has been deleted.
+
+You may reapply again in one week if you wish after editing your chapter to meet the library requirements.
+
+The following comments were left by the editor rejecting your account:
+<?php echo strip_tags($_POST['comment'])?> 
+
+Thank you,
+  Site Administration

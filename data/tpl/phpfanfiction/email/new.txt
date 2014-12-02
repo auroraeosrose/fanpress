@@ -1,0 +1,29 @@
+<?php
+/**
+ * new.txt - tpl for new user email
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: new.txt,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+Someone using this email address has requested an account at <?php echo $config['domain']?> 
+
+Your login name is <?php echo $_POST['name']?> 
+Your password is <?php echo $_POST['password1']?> 
+
+A special number has been generated to activate your account.
+Your number is <?php echo $hash?> 
+
+Please visit <?php echo $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']?>?a=3 and enter this code to activate your account.
+
+Thank you,
+  Site Administration

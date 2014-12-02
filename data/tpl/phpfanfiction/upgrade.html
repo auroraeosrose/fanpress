@@ -1,0 +1,83 @@
+<?php
+/**
+ * upgrade.html - tpl for requesting account upgrade
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: upgrade.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   module
+ * @category     category
+ * @filesource
+ */
+?>
+          <h1>Request Account Upgrade</h1>
+          <ul>
+            <li>[<a href="index.php?a=0" title="Edit user profile information">Profile</a>]</li>
+            <li>[<a href="index.php?a=1" title="Manage author and book favorites">Favorites</a>]</li>
+            <li title="Request Account Upgrade">[<strong>Account Upgrade</strong>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if(isset($edit)):extract($edit, EXTR_PREFIX_ALL, 'e');?>
+          <p>
+            Please check over the application information you've entered and change anything that needs to be changed in the
+            form below before submitting.  Files upload better when they are NOT hard wrapped.
+          </p>
+          <h3>Author Application: <?php echo $e_name?> at <?php echo email($e_email)?></h3>
+          <div class="story">
+            <?php echo indent(format($e_text), 12)?> 
+          </div>
+          <form action="index.php" method="post">
+            <fieldset>
+              <legend>Author Account Application</legend>
+              <input type="hidden" name="a" value="2" />
+              <label for="authorname">Name:</label> <input name="name" id="authorname" type="text" value="<?php echo $e_name?>"/><span>Your author penname</span>
+              <label for="authoremail">Email:</label> <input id="authoremail" name="email" type="text" value="<?php echo $e_email?>"/><span>Your author contact email</span>
+              <label for="authortext">Text:</label> <textarea class="text" name="text" id="authortext" rows="20" cols="30"><?php echo $e_text?></textarea>
+              <div class="row">
+                <input type="submit" value="Preview Application" name="preview" />
+                <input type="submit" value="Submit Application" name="submit" />
+                <input type="submit" value="Delete Application" name="delete" />
+              </div>
+              <br style="clear: both"/>
+            </fieldset>
+          </form>
+<?php else:?>
+          <p>
+            This website uses an application system to accept new authors into the library.
+            This system is merit based, meaning anyone who meet the requirements will be able to
+            become an author, it is not based on who you know or who you are.  The current requirements
+            for an author account involve filling out the form below, and submitting a 500 word or larger
+            sample of your writing.  This sample can be about anything related to Sailor Moon - it does NOT have
+            to be a Shitennou and Senshi story, and can be anything from a historical romance to a canon tale.  Since
+            this sample will be stored along with your author profile, it needs to be appropriate for
+            all readers.  Good spelling and grammar are a must, and although it may be part of a larger
+            story, remember it will be archived and readable permanently so a stand alone story or vingnette
+            is preferable.  After you submit your application one of the site editors will review it and send
+            an acceptance or rejection email.  So make sure that the email address you use when applying is
+            accessible.  If your application is rejected, the editor will include specific instructions
+            for what needs to be improved and/or fixed in your story and your current application will be deleted.
+            If your application is accepted, you will be granted immediate access to your author account.
+          </p>
+          <form action="index.php" method="post" enctype="multipart/form-data">
+            <fieldset>
+            <legend>Author Account Application</legend>
+              <input type="hidden" name="a" value="2" />
+              <input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+              <label for="authorname">Name:</label> <input name="name" id="authorname" type="text" /> <span>Author pen names must be unique, and are case sensitive.</span>
+              <label for="authoremail">Email:</label> <input id="authoremail" name="email" type="text" /> <span>Your email address will not be released to other parties and is used solely for messages regarding the site.  Please make sure this account is accessible and not over-full.</span>
+              <label for="authorfile">File:</label> <input id="authorfile" type="file" name="datafile" /> <span>You may upload a file in html, htm, or txt format for your story. Or you may cut and paste text into the text area.  Do not upload a file AND enter text.</span>
+              <label for="authortext">Text:</label> <textarea class="text" name="text" id="authortext" rows="20" cols="30"></textarea>
+              <input type="submit" value="Preview Application" name="preview"/>
+            </fieldset>
+          </form>
+<?php endif?>

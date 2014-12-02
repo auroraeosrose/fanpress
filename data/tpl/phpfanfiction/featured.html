@@ -1,0 +1,39 @@
+<?php
+/**
+ * featured.html - show list of featured books
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: featured.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Featured Books</h1>
+<?php if($total == 0):?>
+          <p class="error">
+            There are no Featured Books
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php while($row = $featurelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'f');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span>&nbsp;<a href="featured.php?id=<?php echo $f_id?>"><?php echo $f_title?></a> by <a href="user.php?id=<?php echo $f_userid?>"><?php echo $f_username?></a></span>
+              <span>Chapters: <?php echo $f_chapters?></span><span><?php if($f_completed == 1){echo 'Completed';}else{echo 'Unfinished';}?></span>
+              <br style="clear: both" />
+              <span class="big">Summary: <?php echo $f_summary?></span><span>Featured: <?php echo date_format($f_date)?></span><span>&nbsp;</span>
+              <br style="clear: both" />
+              <span class="big"><a href="book.php?id=<?php echo $f_bookid?>"><?php echo $f_booktitle?></a> by <?php echo group_concat($f_author, $f_authorid, 'author.php?', 'id', $nest, ' and ');?></span>
+              <span>Published: <?php echo date_format($f_publish)?></span><span>Updated: <?php echo date_format($f_update)?></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$featurelist->close();?>
+          </ul>
+<?php $querystring = 'featured.php?';include('paging.html')?>
+<?php endif?>

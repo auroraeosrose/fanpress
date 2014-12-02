@@ -1,0 +1,305 @@
+<?php
+/**
+ * authorbookedit.html - form to edit book
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authorbookedit.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Edit Book</h1>
+          <ul>
+            <li>[<a href="book.php?a=0" title="Create New Book">New</a>]</li>
+            <li>[<strong title="Edit Current Books">Edit</strong>]</li>
+            <li>[<a href="book.php?a=1" title="Delete Current Book">Delete</a>]</li>
+            <li>[<a href="book.php?a=3" title="View Book Statistics">Statistics</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if($mode == 0):?>
+<?php if($books->num_rows < 1):?>
+          <p class="error">
+            No Current Books
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php $crows = 0;$offset = 1;while($row = $books->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'b');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span>&nbsp;<a href="../book.php?id=<?php echo $b_id?>"><?php echo $b_title?></a> by <?php echo group_concat($b_author, $b_authorid, 'author.php?', 'id', $nest, ' and ');?></span>
+              <span>Published: <?php echo date_format($b_publish)?></span><span>Updated: <?php echo date_format($b_update)?></span>
+              <br style="clear: both" />
+              <span><a href="book.php?a=1&amp;m=1&amp;id=<?php echo $b_id?>">Edit Book Info</a></span>
+              <span><a href="book.php?a=1&amp;m=2&amp;id=<?php echo $b_id?>">Manage Chapters</a></span>
+              <span><a href="book.php?a=1&amp;m=2&amp;rid=<?php echo $b_id?>">Reply to Comments</a></span>
+              <span>Words: <?php echo $b_wordcount?></span>
+              <span>Chapters: <?php echo $b_chapters?></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$books->close();?>
+          </ul>
+<?php endif;elseif($mode == 1):extract($book, EXTR_PREFIX_ALL, 'b')?>
+          <script type="text/javascript">
+            function showDescription(value) {
+              for(x = 0; x <= <?php echo ($catlist->num_rows - 1)?>; x++) {
+                document.getElementById('desc' + x).style.display='none';
+              }
+              document.getElementById('desc' + value).style.display='block';
+            }
+            function showDescription2(value) {
+              for(x = 0; x <= <?php echo ($ratinglist->num_rows - 1)?>; x++) {
+               document.getElementById('desc2' + x).style.display='none';
+              }
+              document.getElementById('desc2' + value).style.display='block';
+            }
+            function showDescription3(value) {
+              for(x = 0; x <= <?php echo ($charlist->num_rows - 1)?>; x++) {
+               document.getElementById('desc3' + x).style.display='none';
+              }
+              document.getElementById('desc3' + value).style.display='block';
+            }
+            function showDescription4(value) {
+              for(x = 0; x <= <?php echo ($genrelist->num_rows - 1)?>; x++) {
+               document.getElementById('desc4' + x).style.display='none';
+              }
+              document.getElementById('desc4' + value).style.display='block';
+            }
+            function showDescription5(value) {
+              for(x = 0; x <= <?php echo ($warninglist->num_rows - 1)?>; x++) {
+               document.getElementById('desc5' + x).style.display='none';
+              }
+              document.getElementById('desc5' + value).style.display='block';
+            }
+            function showDescription6(value) {
+              for(x = 0; x <= <?php echo ($typelist->num_rows - 1)?>; x++) {
+               document.getElementById('desc6' + x).style.display='none';
+              }
+              document.getElementById('desc6' + value).style.display='block';
+            }
+            function showDescription7(value) {
+              for(x = 0; x <= <?php echo ($stylelist->num_rows - 1)?>; x++) {
+               document.getElementById('desc7' + x).style.display='none';
+              }
+              document.getElementById('desc7' + value).style.display='block';
+            }
+          </script>
+          <form action="book.php" method="post" enctype="multipart/form-data">
+            <fieldset>
+              <legend>Edit Book Information</legend>
+              <input type="hidden" name="a" value="1" />
+              <input type="hidden" name="id" value="<?php echo $b_id?>" />
+              <input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+              <label for="booktitle">Title:</label> <input name="title" id="booktitle" type="text" value="<?php echo $b_title?>"/> <span>A title for your story, unique titles are easier to remember and find</span>
+              <label for="booksummary">Summary:</label> <textarea name="summary" id="booksummary" rows="10" cols="30"><?php echo $b_summary?></textarea> <span>A fairly short summary describing your book.  Summaries like "I'm not good at summaries" will not be accepted.  Ask a friend to help.</span>
+              <br/><label for="statusfilter">Status:</label>
+              <select id="statusfilter" name="status">
+                <option value="0" <?php if($b_status == 0){echo 'selected="selected"';}?>>Unfinished</option>
+                <option value="1" <?php if($b_status == 1){echo 'selected="selected"';}?>>Completed</option>
+              </select><span>Mark whether the status is completed or not</span>
+              <br/><label for="filtercat">Category:</label>
+              <select id="filtercat" name="cid" onchange="javascript:showDescription(this.selectedIndex)">
+<?php while($row = $catlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if($b_cid == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$catlist->data_seek(0)?>
+              </select> <span>A category for your story, the category description will appear when you select a category, so you're sure to find the right one.<br/>
+<?php $x=0; while($row = $catlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc<?php echo $x?>"<?php if($b_cid != $c_id and $x > 0){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$catlist->close()?></span>
+              <br/><label for="filtertype">Type:</label>
+              <select id="filtertype" name="tid" onchange="javascript:showDescription6(this.selectedIndex)">
+<?php while($row = $typelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if($b_tid == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$typelist->data_seek(0)?>
+              </select> <span>A type or time period.<br/>
+<?php $x=0; while($row = $typelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc6<?php echo $x?>"<?php if($b_tid != $c_id and $x > 0){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$typelist->close()?></span>
+              <br/><label for="filterstyle">Style:</label>
+              <select id="filterstyle" name="sid" onchange="javascript:showDescription7(this.selectedIndex)">
+<?php while($row = $stylelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if($b_sid == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$stylelist->data_seek(0)?>
+              </select> <span>A storyline style.<br/>
+<?php $x=0; while($row = $stylelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc7<?php echo $x?>"<?php if($b_sid != $c_id and $x > 0){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$stylelist->close()?></span>
+              <label for="filterratings">Rating:</label>
+              <select id="filterratings" name="rid" onchange="javascript:showDescription2(this.selectedIndex)">
+<?php while($row = $ratinglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['rid']) and $_POST['rid'] == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$ratinglist->data_seek(0)?>
+              </select>  <span>A rating for your story, the rating description will appear when you select a category, so you're sure to find the right one.  Please do not underrate your work, its better to have too high a rating.<br/>
+<?php $x=0; while($row = $ratinglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc2<?php echo $x?>"<?php if((isset($_POST['rid']) and $_POST['rid'] != $c_id) or (!isset($_POST['rid']) and $x > 0)){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$ratinglist->close()?></span>
+              <label for="filtercat2">Character Descriptions:</label>
+              <select id="filtercat2" onchange="javascript:showDescription3(this.selectedIndex)">
+<?php while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$charlist->data_seek(0)?>
+              </select>
+<?php $x=0; while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc3<?php echo $x?>"<?php if($x > 0){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$charlist->data_seek(0)?>
+              <br/><label for="filterchar">Characters:</label>
+              <select id="filterchar" name="chid[]" multiple="multiple" class="multiple">
+<?php while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(in_array($c_id, explode(':', $b_chid))){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$charlist->close()?>
+              </select><span>Click and drag for multiple consecutive characters, or hold ctl while clicking to select non-consecutive characters</span>
+              <br/><label for="filtercat1">Genre Descriptions:</label>
+              <select id="filtercat1" onchange="javascript:showDescription4(this.selectedIndex)">
+<?php while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$genrelist->data_seek(0)?>
+              </select>
+<?php $x=0; while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc4<?php echo $x?>"<?php if($x > 0){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$genrelist->data_seek(0)?>
+              <br/><label for="filtergenre">Genres:</label>
+              <select id="filtergenre" name="gid[]" multiple="multiple" class="multiple">
+<?php while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(in_array($c_id, explode(':', $b_gid))){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$genrelist->close()?>
+              </select><span>Click and drag for multiple consecutive genres, or hold ctl while clicking to select non-consecutive genres</span>
+              <br/><label for="filtercat3">Warning Descriptions:</label>
+              <select id="filtercat3" onchange="javascript:showDescription5(this.selectedIndex)">
+<?php while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$warninglist->data_seek(0)?>
+              </select>
+<?php $x=0; while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc5<?php echo $x?>"<?php if($x > 0){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$warninglist->data_seek(0)?>
+              <br/><label for="filterwarnings">Warnings:</label>
+              <select id="filterwarnings" name="wid[]" multiple="multiple" class="multiple">
+<?php while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(in_array($c_id, explode(':', $b_wid))){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$warninglist->close()?>
+              </select><span>Click and drag for multiple consecutive genres, or hold ctl while clicking to select non-consecutive genres</span>
+              <br/><label for="addauthors">Add Authors:</label>
+              <input type="text" name="authors" id="addauthors"<?php if(isset($_POST['authors'])){echo ' value="'.htmlentities($_POST['authors']).'"';}?>/>
+              <span>This library allows books to have an unlimited number of authors.  But multiple authors work so that every author you include has full control over the book.  That means your co-authors can edit and delete the chapters and book exactly the way you can.  So be sure you trust anyone you make a co-author.  Enter a comma seperated list of pen names, remember names are case sensitive</span>
+              <label for="booknotesfile">File:</label> <input id="booknotesfile" type="file" name="datafile" /> <span>You may upload a file in html, htm, or txt format for your author notes. Or you may cut and paste text into the text area.  If you upload a file all current text will be overwritten.</span>
+              <label for="booknotestext">Text:</label> <textarea class="text" name="notes" id="booknotestext" rows="20" cols="30"><?php echo $b_text?></textarea>
+              <p><a href="book.php?a=1">Return to List</a></p>
+              <input type="submit" value="Edit Book" name="submit" />
+            </fieldset>
+          </form>
+<?php elseif($mode == 2):?>
+<?php if(isset($chapter)):extract($chapter, EXTR_PREFIX_ALL, 'c');?>
+          <form action="book.php" method="post" enctype="multipart/form-data">
+            <fieldset>
+              <legend>Edit Chapter</legend>
+              <input type="hidden" name="a" value="1" />
+              <input type="hidden" name="id" value="<?php echo $c_bid?>" />
+              <input type="hidden" name="cid" value="<?php echo $c_id?>" />
+              <input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+              <p><a href="../book.php?id=<?php echo $c_bid?>"><?php echo $c_btitle?></a> by <?php echo group_concat($c_author, $c_authorid, 'author.php?', 'id', $nest, ' and ');?></p>
+              <label for="chaptertitle">Title:</label> <input name="title" id="chaptertitle" type="text" value="<?php echo $c_title?>"/> <span>A title for your chapter</span>
+              <label for="chapterfile">File:</label> <input id="chapterfile" type="file" name="datafile" /> <span>You may upload a file in html, htm, or txt format. Or you may cut and paste text into the text area.  If you upload a file all current text will be overwritten.  Text files without wrapped lines display the best.</span>
+              <label for="chaptertext">Text:</label> <textarea class="text" name="text" id="chaptertext" rows="20" cols="30"><?php echo $c_text?></textarea>
+              <input type="submit" value="Edit Chapter" name="editchapter" />
+            </fieldset>
+          </form>
+          <h4><a href="book.php?a=1&amp;m=2&amp;id=<?php echo $c_bid?>">Return to Chapters</a></h4>
+<?php elseif(isset($comments)):?>
+<?php if(isset($_GET['c'])):?>
+          <form action="book.php" method="post">
+            <fieldset>
+              <legend>Reply to Comment</legend>
+              <input type="hidden" name="a" value="1" />
+              <input type="hidden" name="m" value="2" />
+              <input type="hidden" name="rid" value="<?php echo $_GET['rid']?>" />
+              <input type="hidden" name="c" value="<?php echo $_GET['c']?>" />
+              <?php echo indent(format($text), 14)."\n"?>
+              <label for="commenttext">Comment Reply:</label> <textarea id="commenttext" name="text" rows="10" cols="30"></textarea><span>Leave your comment reply here.  Remember you cannot edit the reply so make sure it is exactly how you want it.</span><br/>
+              <input type="submit" value="Reply" name="reply" />
+            </fieldset>
+          </form>
+<?php endif?>
+<?php if($total == 0):?>
+          <p class="error">
+            There are no Comments
+          </p>
+<?php else:?>
+<?php while($row = $comments->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c');?>
+          <h3><a href="user.php?id=<?php echo $c_id?>"><?php echo $c_name?></a><?php if(empty($c_reply)){?> - <span class="small"><a href="book.php?a=1&amp;m=2&amp;rid=<?php echo $_REQUEST['rid']?>&amp;c=<?php echo $c_cid?>">Reply</a><?php }?></span></h3>
+          <div class="story">
+<?php if($c_private == 1):?>
+            <p class="error">Private</p>
+<?php endif?>
+            <?php echo indent(format($c_text), 12)?> 
+            <hr />
+            <div><?php echo indent(format($c_reply), 12)?></div>
+            <span class="small"><?php echo date_format($c_date)?></span>
+          </div>
+<?php endwhile;$comments->close();?>
+<?php $querystring = 'book.php?a=1&amp;m=2&amp;rid='.$_REQUEST['rid'].'&amp;';include('paging.html')?>
+<?php endif;else:?>
+          <ul class="list">
+<?php $offset = 1;while($row = $chapters->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span>&nbsp;<a href="../book.php?id=<?php echo $c_bid?>&amp;c=<?php echo $c_id?>"><?php echo $c_title?></a></span>
+              <span>Published: <?php echo date_format($c_publish)?></span><span>Updated: <?php echo date_format($c_update)?></span>
+              <br style="clear: both" />
+              <span>Wordcount: <?php echo $c_wordcount?></span>
+              <span><a href="book.php?a=1&amp;m=2&amp;cid=<?php echo $c_id?>">Edit Chapter</a></span>
+              <span><a href="book.php?a=1&amp;m=2&amp;id=<?php echo $c_bid?>&amp;did=<?php echo $c_id?>">Delete Chapter</a></span>
+              <span><?php if($c_id != $min):?><a href="book.php?a=1&amp;m=2&amp;id=<?php echo $c_bid?>&amp;uid=<?php echo $c_id?>">Move Up</a><?php else:?>&nbsp;<?php endif?></span>
+              <span><?php if($c_id != $max):?><a href="book.php?a=1&amp;m=2&amp;id=<?php echo $c_bid?>&amp;eid=<?php echo $c_id?>">Move Down</a><?php else:?>&nbsp;<?php endif?></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$chapters->close();?>
+          </ul>
+          <h4><a href="book.php?a=1&amp;m=3&amp;id=<?php echo $c_bid?>">Create New Chapter</a> | <a href="book.php?a=1">Return to List</a></h4>
+<?php endif?>
+<?php else:extract($book, EXTR_PREFIX_ALL, 'b');if(isset($_POST['preview'])):?>
+          <h3>
+            <?php echo $_POST['title']?> 
+          </h3>
+          <div class="story">
+            <?php echo indent(format($_POST['text']), 12)?> 
+          </div>
+          <form action="book.php" method="post" enctype="multipart/form-data">
+            <fieldset>
+              <legend>Create New Chapter</legend>
+              <p>Chapter will be added to the end of <a href="../book.php?id=<?php echo $b_id?>"><?php echo $b_title?></a></p>
+              <input type="hidden" name="a" value="1" />
+              <input type="hidden" name="id" value="<?php echo $b_id?>" />
+              <input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+              <label for="chaptertitle">Title:</label> <input name="title" id="chaptertitle" type="text" value="<?php echo $_POST['title']?>"/> <span>A title for your chapter</span>
+              <label for="chapterfile">File:</label> <input id="chapterfile" type="file" name="datafile" /> <span>You may upload a file in html, htm, or txt format. Or you may cut and paste text into the text area.  If you upload a file all current text will be overwritten.  Text files without wrapped lines display the best.</span>
+              <label for="chaptertext">Text:</label> <textarea class="text" name="text" id="chaptertext" rows="20" cols="30"><?php echo $_POST['text']?></textarea>
+              <p><a href="book.php?a=1">Return to List</a></p>
+              <input type="submit" value="Preview Chapter" name="preview" />
+              <input type="submit" value="Add Chapter" name="new" />
+            </fieldset>
+          </form>
+<?php else:?>
+          <form action="book.php" method="post" enctype="multipart/form-data">
+            <fieldset>
+              <legend>Create New Chapter</legend>
+              <p>Chapter will be added to the end of <a href="../book.php?id=<?php echo $b_id?>"><?php echo $b_title?></a></p>
+              <input type="hidden" name="a" value="1" />
+              <input type="hidden" name="id" value="<?php echo $b_id?>" />
+              <input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+              <label for="chaptertitle">Title:</label> <input name="title" id="chaptertitle" type="text" /> <span>A title for your chapter</span>
+              <label for="chapterfile">File:</label> <input id="chapterfile" type="file" name="datafile" /> <span>You may upload a file in html, htm, or txt format. Or you may cut and paste text into the text area.  If you upload a file all current text will be overwritten.  Text files without wrapped lines display the best.</span>
+              <label for="chaptertext">Text:</label> <textarea class="text" name="text" id="chaptertext" rows="20" cols="30"></textarea>
+              <p><a href="book.php?a=1">Return to List</a></p>
+              <input type="submit" value="Preview Chapter" name="preview" />
+            </fieldset>
+          </form>
+<?php endif;endif?>
+

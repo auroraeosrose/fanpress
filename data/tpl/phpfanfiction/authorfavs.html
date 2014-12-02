@@ -1,0 +1,45 @@
+<?php
+/**
+ * authorfavs.html - add author to favorites form
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authorfavs.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($profile, EXTR_PREFIX_ALL, 'a')?>
+          <h1>Add to Favorites</h1>
+          <ul class="dark">
+            <li>[<a href="author.php?id=<?php echo $a_id?>&amp;f=0" title="View the author profile">Profile</a>]</li>
+            <li>[<a href="author.php?id=<?php echo $a_id?>&amp;f=1" title="View authors published books">Books</a>]</li>
+            <li>[<a href="author.php?id=<?php echo $a_id?>&amp;f=2" title="View author's application story">Story</a>]</li>
+            <li>[<strong title="Add author to favorites">Add to Favorites</strong>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?>
+          </p>
+<?php endif?>
+          <form action="author.php" method="post">
+            <fieldset>
+            <legend>Add Author to Favorites</legend>
+              <input type="hidden" name="f" value="3" />
+              <input type="hidden" name="id" value="<?php echo $a_id?>" />
+              <label for="commenttext">Comment:</label> <textarea id="commenttext" name="text" rows="10" cols="30"></textarea><span>Add your comments about the author to be shown on your favorites page</span>
+              <input type="submit" value="Add Author to Favorites" name="submit"/>
+            </fieldset>
+          </form>
+          <ul class="dark">
+            <li>[ID# <?php echo $a_id?>]</li>
+            <li>[Author Since: <?php echo date_format($a_date)?>]</li>
+            <li>[<a href="user.php?id=<?php echo $a_userid?>" title="View the user profile linked to this author">User Profile</a>]</li>
+            <li>[<?php echo email($a_email, 'Send Mail')?>]</li>
+          </ul>

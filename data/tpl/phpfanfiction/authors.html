@@ -1,0 +1,51 @@
+<?php
+/**
+ * authors.html - author list for browse area
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authors.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Browse by Author</h1>
+          <ul>
+            <li>[<a href="browse.php?a=0" title="Browse latest stories">Latest</a>]</li>
+            <li>[<a href="browse.php?a=1" title="Browse by categories">Categories</a>]</li>
+            <li>[<a href="browse.php?a=2" title="Browse by title">Titles</a>]</li>
+            <li title="Browse by author">[<strong>Authors</strong>]</li>
+          </ul>
+          <ul>
+<?php foreach($alphabet as $let):if(isset($letter) and $let == $letter):?>
+            <li><strong><?php if($let == 'NUM'):echo '&#35;';else:echo $let;endif?></strong></li>
+<?php elseif(!isset($letter) and $let == 'ALL'):?>
+            <li><strong>ALL</strong></li>
+<?php else:?>
+            <li><a href="browse.php?a=3&amp;l=<?php echo $let?>"><?php if($let == 'NUM'):echo '&#35;';else:echo $let;endif?></a></li>
+<?php endif;endforeach?>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?>
+          </p>
+<?php else:?>
+<?php $col = ceil($size/3); for($c = 0; $c < 3; $c++):?>
+          <ul class="col">
+<?php for($i = 0; $i < $col; $i++):$row = $authors->fetch_assoc();
+if(!is_null($row)):extract($row, EXTR_PREFIX_ALL, 'a');else:?>
+            <li class="end">&nbsp;</li>
+<?php break;endif?>
+            <li><a href="author.php?id=<?php echo $a_id?>"><?php echo $a_name?></a></li>
+<?php endfor?>
+          </ul>
+<?php endfor;$authors->close();?>
+          <hr/>
+<?php $querystring = 'browse.php?a=3&amp;';if(isset($letter)){$querystring .='l='.$letter.'&amp;';}include('paging.html')?>
+<?php endif?>

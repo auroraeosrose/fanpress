@@ -1,0 +1,43 @@
+<?php
+/**
+ * adminfeaturedlist.html - list current featured stories for admin
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminfeaturedlist.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>List Featured</h1>
+          <ul>
+            <li>[<strong title="List current featured">List</strong>]</li>
+            <li>[<a href="featured.php?a=1" title="Create new featured">New</a>]</li>
+            <li>[<a href="featured.php?a=2" title="Edit existing featured">Edit</a>]</li>
+            <li>[<a href="featured.php?a=3" title="Delete featured">Delete</a>]</li>
+          </ul>
+<?php if($total == 0):?>
+          <p class="error">
+            There are no Featured Stories
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php while($row = $featurelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'f');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span><a href="featured.php?a=2&amp;id=<?php echo $f_id?>"><?php echo $f_title?></a> by <a href="user.php?a=2&amp;id=<?php echo $f_uid?>"><?php echo $f_uname?></a>
+              about <a href="book.php?a=2&amp;id=<?php echo $f_bid?>"><?php echo $f_btitle?></a></span>
+              <span><a href="featured.php?a=0&amp;did=<?php echo $f_id?>">Delete</a></span>
+              <span>Posted: <?php echo date_format($f_date)?></span>
+              <br style="clear: both"/>
+            </li>
+<?php endwhile;$featurelist->close();?>
+          </ul>
+<?php $querystring = 'featured.php?a=0&amp;';include('paging.html')?>
+<?php endif?>
+

@@ -1,0 +1,98 @@
+<?php
+/**
+ * userfavorites.html - show a list of users favorites and give links for editing
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: userfavorites.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Manage User Favorites</h1>
+          <ul>
+            <li>[<a href="index.php?a=0" title="Edit user profile information">Profile</a>]</li>
+            <li title="Manage author and book favorites">[<strong>Favorites</strong>]</li>
+<?php if(isset($author) and $author != FALSE):?>
+            <li>[<a href="../author/index.php" title="Your author account">Author Account</a>]</li>
+<?php else:?>
+            <li>[<a href="index.php?a=2" title="Request Account Upgrade">Account Upgrade</a>]</li>
+<?php endif?>
+          </ul>
+<?php if($booktotal < 1):?>
+          <p class="error">
+            No Current Book Favorites
+          </p>
+<?php else:?>
+          <h3>Favorite Books</h3>
+          <ul class="list">
+<?php $offset = 1; while($row = $bookfavs->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'b');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span>&nbsp;<a href="book.php?id=<?php echo $b_bookid?>"><?php echo $b_title?></a> by <?php echo group_concat($b_author, $b_authorid, 'author.php?', 'id', $nest, ' and ');?></span>
+              <span>Published: <?php echo date_format($b_publish)?></span><span>Updated: <?php echo date_format($b_update)?></span>
+              <br style="clear: both" />
+              <span class="big small"><a href="browse.php?a=2&amp;cid=<?php echo $b_catid?>"><?php echo $b_catname?></a> : <a href="browse.php?a=2&amp;tid=<?php echo $b_typeid?>"><?php echo $b_type?></a> :
+              <a href="browse.php?a=2&amp;sid=<?php echo $b_styleid?>"><?php echo $b_style?></a> : <?php echo group_concat($b_genre, $b_genreid, 'browse.php?a=0&amp;', 'gid', $nest, '/');?> :
+              <a href="browse.php?a=0&amp;rid=<?php echo $b_ratingid?>"><?php echo $b_rating?></a> : <?php echo group_concat($b_warning, $b_warningid, 'browse.php?a=0&amp;', 'wid', $nest, '/');?> :
+              <?php echo group_concat($b_character, $b_characterid, 'browse.php?a=0&amp;', 'chid', $nest, ', ');?></span>
+              <span>Chapters: <?php echo $b_chapters?> Words: <?php echo $b_wordcount?></span><span><?php if($b_completed == 1){echo 'Completed';}else{echo 'Unfinished';}?></span>
+              <br style="clear: both" />
+              <span class="big"><?php echo $b_summary?></span>
+              <span><a href="comment.php?id=<?php echo $b_bookid?>">Comments: <?php echo $b_comments?></a></span><?php echo rank_images($b_ranking, $nest)?> 
+              <br style="clear: both" />
+              <span class="all">Your Comments: <?php echo $b_bookcomments?></span>
+              <span class="big">&nbsp;</span>
+              <span><a href="index.php?a=1&amp;b=1&amp;id=<?php echo $b_id?>">Edit</a></span>
+              <span><a href="index.php?a=1&amp;b=1&amp;did=<?php echo $b_id?>">Delete</a></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$bookfavs->close();?>
+          </ul>
+<?php endif;?>
+<?php if($authortotal < 1):?>
+          <p class="error">
+            No Current Author Favorites
+          </p>
+<?php else:?>
+          <h3>Favorite Authors</h3>
+          <ul class="list">
+<?php $offset = 1; while($row = $authorfavs->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'a');?>
+            <li class="big">
+              <span class="big"><span><?php echo $offset++;?>.</span>&nbsp;<a href="../author.php?id=<?php echo $a_authid?>"><?php echo $a_name?></a></span>
+              <span>Approved: <?php echo date_format($a_date)?></span><span>Total Books: <?php echo $a_books?></span>
+              <span class="all">Your Comments: <?php echo $a_comment?></span>
+              <br style="clear: both" />
+              <span class="big">&nbsp;</span>
+              <span><a href="index.php?a=1&amp;id=<?php echo $a_id?>">Edit</a></span>
+              <span><a href="index.php?a=1&amp;did=<?php echo $a_id?>">Delete</a></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$authorfavs->close();?>
+          </ul>
+<?php endif;?>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if(isset($edit)):extract($edit, EXTR_PREFIX_ALL, 'e');?>
+          <form action="index.php" method="post" style="clear: both">
+            <fieldset>
+            <legend>Edit Favorite</legend>
+              <input type="hidden" value="1" name="a" />
+              <input type="hidden" value="<?php echo $e_id?>" name="id" />
+<?php if(isset($e_book)):?>
+              <input type="hidden" value="1" name="b" />
+<?php endif?>
+              <label for="commenttext">Comment:</label> <textarea id="commenttext" name="text" rows="10" cols="30"><?php echo $e_comment?></textarea><span>Change your commments</span>
+              <input type="submit" value="Edit Favorite" name="edit" />
+            </fieldset>
+          </form>
+<?php endif?>
+

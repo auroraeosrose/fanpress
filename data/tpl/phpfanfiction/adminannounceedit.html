@@ -1,0 +1,97 @@
+<?php
+/**
+ * adminannounceedit.html - edit/search, list announcements
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminannounceedit.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Edit Announcement</h1>
+          <ul>
+            <li>[<a href="index.php?a=0" title="List current announcements">List</a>]</li>
+            <li>[<a href="index.php?a=1" title="Create new announcement">New</a>]</li>
+            <li>[<strong title="Edit existing announcement">Edit</strong>]</li>
+            <li>[<a href="index.php?a=3" title="Delete announcement">Delete</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if(isset($preview)):?>
+          <h3><?php echo $a_title?></h3>
+          <div class="border">
+            <?php echo indent(format($a_text), 12)?> 
+            <span class="small dark"><?php echo date_format($a_date)?></span>
+          </div>
+<?php endif?>
+<?php if(isset($announcement) and !is_null($announcement)):extract($announcement, EXTR_PREFIX_ALL, 'a');?>
+          <p>Remember that all html tags will be stripped.  Use **bold** for bold and newlines for breaks in the text body.</p>
+          <form action="index.php" method="post" id="new">
+            <fieldset>
+            <legend>Edit Announcement</legend>
+              <input type="hidden" value="2" name="a" />
+              <input type="hidden" value="<?php echo $a_id?>" name="id" />
+              <label for="announcetitle">Announcement Title:</label> <input id="announcetitle" name="title" type="text" value="<?php echo $a_title?>" />
+              <label for="announcetext">Announcement Text:</label> <textarea id="announcetext" name="text" cols="30" rows="20"><?php echo $a_text?></textarea>
+              <input type="submit" value="Change Announcement" name="submit" onclick="javascript:alert('Please Preview the Announcement');return false;" />
+              <input type="submit" value="Preview Announcement" name="preview" />
+            </fieldset>
+          </form>
+<?php elseif(isset($preview)):?>
+          <p>Remember that all html tags will be stripped.  Use **bold** for bold and newlines for breaks in the text body.</p>
+          <form action="index.php" method="post" id="new">
+            <fieldset>
+              <legend>Edit Announcement</legend>
+              <input type="hidden" value="2" name="a" />
+              <input type="hidden" value="<?php echo $_POST['id']?>" name="id" />
+              <label for="announcetitle">Announcement Title:</label> <input id="announcetitle" name="title" type="text" value="<?php echo $_POST['title']?>" />
+              <label for="announcetext">Announcement Text:</label> <textarea id="announcetext" name="text" cols="30" rows="20"><?php echo $_POST['text']?></textarea>
+              <input type="submit" value="Change Announcement" name="submit" />
+              <input type="submit" value="Preview Announcement" name="preview" />
+            </fieldset>
+          </form>
+<?php elseif(!isset($total) or $total == 0):?>
+          <form action="index.php" method="post">
+            <fieldset>
+              <legend>Find Announcement</legend>
+              <input type="hidden" value="2" name="a" />
+              <label for="searchfind">Search For:</label> <input id="searchfind" name="string" type="text" />
+              <span>
+                Boolean Mode can use + to require a word, - to exlude a word, &lt; and &gt; to change word relevance value, () to group
+                sub-expressions, ~ to mark noise words (a word you might not want to exclude altogether, but it shouldn't be as important),
+                * as a wildcard so ba* will match ball and bat, and double quotes around literal strings.
+              </span>
+              <label for="searchtitle">Search Title:</label> <div><input id="searchtitle" name="title" type="checkbox" /></div>
+              <label for="searchtext">Search Text:</label> <div><input id="searchtext" name="text" type="checkbox" /></div>
+              <label for="searchbool">Use Boolean Mode:</label> <div><input id="searchbool" name="bool" type="checkbox" /></div>
+              <label for="searchdate">Search by Date:</label> <div><input name="month" type="text" maxlength="2"/>/<input name="day" type="text" maxlength="2" />/<input name="year" type="text" maxlength="4" /></div> <span>Search by a month, day, or year, or any combination.  For example, to find all the posts from January of 2000, enter 01 in the first box, leave the second blank, and enter 2000 in the last box</span>
+              <input type="submit" value="Find Announcement" name="search" />
+            </fieldset>
+          </form>
+<?php else:?>
+          <ul class="list">
+<?php while($row = $results->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'a');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span><a href="index.php?a=2&amp;id=<?php echo $a_id?>"><?php echo $a_title?></a></span>
+              <span><a href="index.php?a=2&amp;did=<?php echo $a_id?>">Delete</a></span>
+              <span>Posted: <?php echo date_format($a_date)?></span>
+              <br style="clear: both"/>
+            </li>
+<?php endwhile;$results->close();?>
+          </ul>
+<?php $querystring = 'index.php?a=2&amp;f=1&amp;';include('paging.html')?>
+<?php endif;if(isset($total) and $total == 0):?>
+          <p class="error">
+            No Matches Found
+          </p>
+<?php endif?>

@@ -1,0 +1,52 @@
+<?php
+/**
+ * adminauthorlist.html - list all authors
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminauthorlist.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>List Authors</h1>
+          <ul>
+            <li>[<strong title="List current users">List</strong>]</li>
+            <li>[<a href="author.php?a=1" title="Create new user">New</a>]</li>
+            <li>[<a href="author.php?a=2" title="Edit existing user">Edit</a>]</li>
+            <li>[<a href="author.php?a=3" title="Delete users">Delete</a>]</li>
+          </ul>
+          <ul>
+<?php foreach($alphabet as $let):if(isset($letter) and $let == $letter):?>
+            <li><strong><?php if($let == 'NUM'):echo '&#35;';else:echo $let;endif?></strong></li>
+<?php elseif(!isset($letter) and $let == 'ALL'):?>
+            <li><strong>ALL</strong></li>
+<?php else:?>
+            <li><a href="author.php?a=0&amp;l=<?php echo $let?>"><?php if($let == 'NUM'):echo '&#35;';else:echo $let;endif?></a></li>
+<?php endif;endforeach?>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php while($row = $authors->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'a');?>
+            <li>
+             <span class="big"> <span><?php echo $offset++;?>.</span> <a href="author.php?a=2&amp;id=<?php echo $a_id?>"><?php echo $a_name?></a> - <a href="user.php?a=2&amp;id=<?php echo $a_uid?>"><?php echo $a_uname?></a></span>
+              <span>Active: <?php if($a_valid == 1){echo 'Yes';}else{echo 'No';}?>
+              - Level: <?php if($a_level == 3){echo 'Admin';}elseif($a_level == 2){echo 'Editor';}elseif($a_level == 1){echo 'Author';}else{echo 'User';}?></span>
+              <span>Since: <?php echo date_format($a_date)?></span>
+              <br style="clear: both"/>
+            </li>
+<?php endwhile;$authors->close();?>
+          </ul>
+<?php $querystring = 'author.php?a=0&amp;';include('paging.html')?>
+<?php endif?>
+

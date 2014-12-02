@@ -1,0 +1,42 @@
+<?php
+/**
+ * userauthor.html - show users favorite authors
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: userauthor.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($userinfo, EXTR_PREFIX_ALL, 'u')?>
+          <h1><?php echo $u_name?></h1>
+          <ul class="dark">
+            <li>[<a href="user.php?id=<?php echo $u_id?>&amp;f=0" title="User profile information">Profile</a>]</li>
+            <li>[<a href="user.php?id=<?php echo $u_id?>&amp;f=1" title="View Favorite Books">Favorite Books</a>]</li>
+            <li>[<strong title="View Favorite Authors">Favorite Authors</strong>]</li>
+<?php if(!empty($u_author)):?>
+            <li>[<a href="author.php?id=<?php echo $u_authorid?>" title="Author account profile of user">Author: <?php echo $u_author?></a>]</li>
+<?php endif?>
+            <li>[<?php echo email($u_email, 'Send Mail')?>]</li>
+<?php if(!empty($u_website)):?>
+            <li>[<a href="<?php echo $u_website?>" title="Visit user website">Website</a>]</li>
+<?php endif?>
+          </ul>
+          <ul class="list">
+<?php $offset = 1;while($row = $authors->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'a');?>
+            <li class="big">
+              <span class="big"><span><?php echo $offset++;?>.</span>&nbsp;<a href="author.php?id=<?php echo $a_id?>"><?php echo $a_name?></a></span>
+              <span>Approved: <?php echo date_format($a_date)?></span><span>Total Books: <?php echo $a_books?></span>
+              <span class="all">User Comments: <?php echo $a_comment?></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$authors->close();?>
+          </ul>
+

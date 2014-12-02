@@ -1,0 +1,203 @@
+<?php
+/**
+ * layout.html - main layout for page tpl
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: layout.html,v 1.2 2004/07/28 20:37:48 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php echo'<?xml version="1.0" encoding="utf-8"?>'."\n"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      <?php echo $title?> 
+    </title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+    <meta http-equiv="keywords" content="<?php echo $keywords?>" />
+    <meta http-equiv="description" content="<?php echo $description?>" />
+<?php if(isset($meta)){echo $meta;}?> 
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $nest?>theme/phpfanfiction/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $nest?>theme/phpfanfiction/print.css" media="print"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo $nest?>theme/phpfanfiction/net4.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo $nest?>theme/phpfanfiction/style.css" media="screen, tv"/>
+    <!--[if lt IE 7]>
+      <style type="text/css">
+        body{behavior:url('<?php echo $nest?>theme/phpfanfiction/iecss.htc')}
+        div#head a#logo{filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo $nest?>theme/phpfanfiction/logo.png', sizingMethod='scale')}
+      </style>
+      <link rel="stylesheet" type="text/css" href="<?php echo $nest?>theme/phpfanfiction/ie.css" media="screen"/>
+    <![endif]-->
+  </head>
+  <body<?php if(isset($onload)){echo $onload;}?>>
+    <div id="right">
+      <div class="wrapper">
+<?php echo $page?> 
+      </div>
+    </div>
+    <div id="left">
+      <div class="wrapper">
+<?php if(isset($side)){echo $side;}?> 
+<?php echo $sidebar?> 
+      </div>
+    </div>
+    <div id="head">
+      <a href="index.php" title="Home" id="logo"><img src="<?php echo $nest?>theme/phpfanfiction/logo.png" alt="Home" /></a>
+      <ul>
+        <li>
+          <a href="<?php echo $nest?>index.php" title="News and Announcements"><img src="<?php echo $nest?>theme/phpfanfiction/home.gif" alt="*" />&nbsp;Home</a>
+        </li>
+        <li>
+          <a href="<?php echo $nest?>user/index.php" title="Member Account"><img src="<?php echo $nest?>theme/phpfanfiction/user.gif" alt="*" />&nbsp;Account</a>
+<?php if($user != FALSE):?>
+          <ul>
+            <li><a href="<?php echo $nest?>user/index.php?a=0" title="Edit user profile.">Profile</a></li>
+            <li><a href="<?php echo $nest?>user/index.php?a=1" title="Manage author and user favorites">Favorites</a></li>
+<?php if($author != FALSE):?>
+            <li>
+              <a href="<?php echo $nest?>author/index.php?a=0" title="Author Account">Author</a>
+              <ul>
+                <li><a href="<?php echo $nest?>author/index.php?a=0" title="Manage Profile">Profile</a></li>
+                <li>
+                  <a href="<?php echo $nest?>author/book.php?a=0" title="Manage Books">Books</a>
+                  <ul>
+                    <li><a href="<?php echo $nest?>author/book.php?a=0" title="Create New Book">New</a></li>
+                    <li><a href="<?php echo $nest?>author/book.php?a=1" title="Edit Current Books">Edit</a></li>
+                    <li><a href="<?php echo $nest?>author/book.php?a=2" title="Delete Existing Book">Delete</a></li>
+                    <li><a href="<?php echo $nest?>author/book.php?a=3" title="View Book Statistics">Stats</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+<?php else:?>
+            <li><a href="<?php echo $nest?>user/index.php?a=2" title="Apply for an author account">Upgrade</a></li>
+<?php endif?>
+            <li><a href="<?php echo $nest?>user/login.php?a=4" title="logout of account">Logout</a></li>
+          </ul>
+<?php else:?>
+          <ul>
+            <li><a href="<?php echo $nest?>user/login.php?a=0" title="Login to your account">Login</a></li>
+            <li><a href="<?php echo $nest?>user/login.php?a=1" title="Register for an account">Register</a></li>
+            <li><a href="<?php echo $nest?>user/login.php?a=2" title="Retrieve lost password.">Lost Password</a></li>
+            <li><a href="<?php echo $nest?>user/login.php?a=3" title="Confirm your new account or new email.">Confirm</a></li>
+          </ul>
+<?php endif?>
+        </li>
+        <li>
+          <a href="<?php echo $nest?>browse.php" title="Story Library"><img src="<?php echo $nest?>theme/phpfanfiction/book.gif" alt="*" />&nbsp;Library</a>
+          <ul>
+            <li>
+              <a href="<?php echo $nest?>browse.php" title="Browse Library">Browse</a>
+              <ul>
+                <li><a href="<?php echo $nest?>browse.php?a=0" title="Browse New Books">Latest</a></li>
+                <li><a href="<?php echo $nest?>browse.php?a=1" title="Browse by Categories">Categories</a></li>
+                <li><a href="<?php echo $nest?>browse.php?a=2" title="Browse by Title">Titles</a></li>
+                <li><a href="<?php echo $nest?>browse.php?a=3" title="Browse by Author">Authors</a></li>
+              </ul>
+            </li>
+            <li><a href="<?php echo $nest?>featured.php" title="Featured Stories">Featured</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="<?php echo $nest?>search.php" title="<?php echo $nest?>Search the Site"><img src="<?php echo $nest?>theme/phpfanfiction/search.gif" alt="*" />&nbsp;Search</a>
+        </li>
+<?php if($editor != FALSE):?>
+        <li>
+          <a href="<?php echo $nest?>editor/index.php" title="Edit Books"><img src="<?php echo $nest?>theme/phpfanfiction/pen.gif" alt="*" />&nbsp;Editor</a>
+          <ul>
+            <li><a href="<?php echo $nest?>editor/index.php?a=0" title="Verify Authors">Authors</a></li>
+            <li><a href="<?php echo $nest?>editor/index.php?a=1" title="Verify Books">Books</a></li>
+            <li><a href="<?php echo $nest?>editor/index.php?a=2" title="Verify Chapters">Chapters</a></li>
+            <li><a href="<?php echo $nest?>editor/index.php?a=3" title="Featured Books">Featured</a></li>
+          </ul>
+        </li>
+<?php endif?>
+<?php if($admin != FALSE):?>
+        <li>
+          <a href="<?php echo $nest?>admin/index.php" title="Administrate the Site"><img src="<?php echo $nest?>theme/phpfanfiction/admin.gif" alt="*" />&nbsp;Admin</a>
+          <ul>
+            <li>
+              <a href="<?php echo $nest?>admin/index.php?a=0" title="Administrate Announcements">Announce</a>
+              <ul>
+                <li><a href="<?php echo $nest?>admin/index.php?a=0" title="List All Announcements">List</a></li>
+                <li><a href="<?php echo $nest?>admin/index.php?a=1" title="Create New Announcement">New</a></li>
+                <li><a href="<?php echo $nest?>admin/index.php?a=2" title="Edit Existing Announcement">Edit</a></li>
+                <li><a href="<?php echo $nest?>admin/index.php?a=3" title="Delete Announcement">Delete</a></li>
+              </ul>
+            </li>
+           <li>
+              <a href="<?php echo $nest?>admin/user.php?a=0" title="Administrate Users">Users</a>
+              <ul>
+                <li><a href="<?php echo $nest?>admin/user.php?a=0" title="List All Users">List</a></li>
+                <li><a href="<?php echo $nest?>admin/user.php?a=1" title="Create New User">New</a></li>
+                <li><a href="<?php echo $nest?>admin/user.php?a=2" title="Edit Existing User">Edit</a></li>
+                <li><a href="<?php echo $nest?>admin/user.php?a=3" title="Delete User">Delete</a></li>
+              </ul>
+            </li>
+           <li>
+              <a href="<?php echo $nest?>admin/author.php?a=0" title="Administrate Authors">Authors</a>
+              <ul>
+                <li><a href="<?php echo $nest?>admin/author.php?a=0" title="List All Authors">List</a></li>
+                <li><a href="<?php echo $nest?>admin/author.php?a=1" title="Create New Authors">New</a></li>
+                <li><a href="<?php echo $nest?>admin/author.php?a=2" title="Edit Existing Authors">Edit</a></li>
+                <li><a href="<?php echo $nest?>admin/author.php?a=3" title="Delete Authors">Delete</a></li>
+              </ul>
+            </li>
+           <li>
+              <a href="<?php echo $nest?>admin/featured.php?a=0" title="Administrate Featured Stories">Featured</a>
+              <ul>
+                <li><a href="<?php echo $nest?>admin/featured.php?a=0" title="List All Featured Stories">List</a></li>
+                <li><a href="<?php echo $nest?>admin/featured.php?a=1" title="Create New Featured Stories">New</a></li>
+                <li><a href="<?php echo $nest?>admin/featured.php?a=2" title="Edit Existing Featured Stories">Edit</a></li>
+                <li><a href="<?php echo $nest?>admin/featured.php?a=3" title="Delete Featured Stories">Delete</a></li>
+              </ul>
+            </li>
+           <li>
+              <a href="<?php echo $nest?>admin/book.php?a=0" title="Administrate Books">Books</a>
+              <ul>
+                <li><a href="<?php echo $nest?>admin/book.php?a=0" title="List All Books">List</a></li>
+                <li><a href="<?php echo $nest?>admin/book.php?a=1" title="Create New Book">New</a></li>
+                <li><a href="<?php echo $nest?>admin/book.php?a=2" title="Edit Existing Books">Edit</a></li>
+                <li><a href="<?php echo $nest?>admin/book.php?a=3" title="Delete Books">Delete</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="<?php echo $nest?>admin/library.php?a=0" title="Administrate Library">Library</a>
+              <ul>
+                <li><a href="<?php echo $nest?>admin/library.php?a=0" title="Manage Categories">Categories</a></li>
+                <li><a href="<?php echo $nest?>admin/library.php?a=1" title="Manage Ratings">Ratings</a></li>
+                <li><a href="<?php echo $nest?>admin/library.php?a=2" title="Manage Styles">Styles</a></li>
+                <li><a href="<?php echo $nest?>admin/library.php?a=3" title="Manage Types">Types</a></li>
+                <li><a href="<?php echo $nest?>admin/library.php?a=4" title="Manage Characters">Characters</a></li>
+                <li><a href="<?php echo $nest?>admin/library.php?a=5" title="Manage Genres">Genres</a></li>
+                <li><a href="<?php echo $nest?>admin/library.php?a=6" title="Manage Warnings">Warnings</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+<?php endif?>
+      </ul>
+    </div>
+    <div id="foot">
+      <div class="wrapper">
+        <p>
+          All contributed content copyright &copy;2004 by original author
+        </p>
+        <p class="small">
+<! -- phpFanfiction requests that you retain the link below to show support of our product and in respect of contributors time.  If you remove this link support may be affected. -- !>
+          Powered by <a href="http://phpfanfiction.com" title="Version 0.2-dev Alpha">phpFanfiction</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

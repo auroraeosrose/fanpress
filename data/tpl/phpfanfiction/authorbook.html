@@ -1,0 +1,56 @@
+<?php
+/**
+ * authorbook.html - list authors published books
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authorbook.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($profile, EXTR_PREFIX_ALL, 'a')?>
+          <h1><?php echo $a_name?></h1>
+          <ul class="dark">
+            <li>[<a href="author.php?id=<?php echo $a_id?>&amp;f=0" title="View the author profile">Profile</a>]</li>
+            <li>[<strong title="View authors published books">Books</strong>]</li>
+            <li>[<a href="author.php?id=<?php echo $a_id?>&amp;f=2" title="View author's application story">Story</a>]</li>
+            <li>[<a href="author.php?id=<?php echo $a_id?>&amp;f=3" title="Add author to favorites">Add to Favorites</a>]</li>
+          </ul>
+<?php if(!empty($books)):?>
+          <ul class="list">
+<?php $offset = 1;while($row = $books->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'b');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span>&nbsp;<a href="book.php?id=<?php echo $b_bookid?>"><?php echo $b_title?></a> by <?php echo group_concat($b_author, $b_authorid, 'author.php?', 'id', $nest, ' and ');?></span>
+              <span>Published: <?php echo date_format($b_publish)?></span><span>Updated: <?php echo date_format($b_update)?></span>
+              <br style="clear: both" />
+              <span class="big small"><a href="browse.php?a=2&amp;cid=<?php echo $b_catid?>"><?php echo $b_catname?></a> : <a href="browse.php?a=2&amp;tid=<?php echo $b_typeid?>"><?php echo $b_type?></a> :
+              <a href="browse.php?a=2&amp;sid=<?php echo $b_styleid?>"><?php echo $b_style?></a> : <?php echo group_concat($b_genre, $b_genreid, 'browse.php?a=0&amp;', 'gid', $nest, '/');?> :
+              <a href="browse.php?a=0&amp;rid=<?php echo $b_ratingid?>"><?php echo $b_rating?></a> : <?php echo group_concat($b_warning, $b_warningid, 'browse.php?a=0&amp;', 'wid', $nest, '/');?> :
+              <?php echo group_concat($b_character, $b_characterid, 'browse.php?a=0&amp;', 'chid', $nest, ', ');?></span>
+              <span>Chapters: <?php echo $b_chapters?> Words: <?php echo $b_wordcount?></span><span><?php if($b_completed == 1){echo 'Completed';}else{echo 'Unfinished';}?></span>
+              <br style="clear: both" />
+              <span class="big"><?php echo $b_summary?></span>
+              <span><a href="comment.php?id=<?php echo $b_bookid?>">Comments: <?php echo $b_comments?></a></span><?php echo rank_images($b_ranking, $nest)?> 
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$books->close();?>
+          </ul>
+<?php else:?>
+          <p class="error">
+            This author has not published any books yet.
+          </p>
+<?php endif?>
+          <ul class="dark">
+            <li>[ID# <?php echo $a_id?>]</li>
+            <li>[Author Since: <?php echo date_format($a_date)?>]</li>
+            <li>[<a href="user.php?id=<?php echo $a_userid?>" title="View the user profile linked to this author">User Profile</a>]</li>
+            <li>[<?php echo email($a_email, 'Send Mail')?>]</li>
+          </ul>
+

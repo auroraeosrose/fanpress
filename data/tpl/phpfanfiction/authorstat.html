@@ -1,0 +1,47 @@
+<?php
+/**
+ * authorstat.html - list of book statistics for author
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authorstat.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Book Statistics</h1>
+          <ul>
+            <li>[<a href="book.php?a=0" title="Create New Book">New</a>]</li>
+            <li>[<a href="book.php?a=1" title="Edit Current Books">Edit</a>]</li>
+            <li>[<a href="book.php?a=2" title="Delete Current Book">Delete</a>]</li>
+            <li>[<strong title="View Book Statistics">Statistics</strong>]</li>
+          </ul>
+<?php if($books->num_rows < 1):?>
+          <p class="error">
+            No Current Books
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php $crows = 0;$offset = 1;while($row = $books->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'b');?>
+            <li>
+              <span class="big dark"><span><?php echo $offset++;?>.</span>&nbsp;<a href="../book.php?id=<?php echo $b_id?>"><?php echo $b_title?></a></span>
+              <span class="dark">Total Views: <?php echo $b_views?></span><span class="dark">Total Words: <?php echo $b_wordcount?></span>
+              <span class="all small">Published: <?php echo date_format($b_publish)?> - Updated: <?php echo date_format($b_update)?> - Chapters: <?php echo $b_chapters?> -
+              <a href="../comment.php?id=<?php echo $b_id?>">Comments: <?php echo $b_comments?></a> - Ranking: <?php echo $b_ranking?></span>
+              <br style="clear: both" />
+<?php $count = 1;while($row = $chapters->fetch_assoc()):$crows++;extract($row, EXTR_PREFIX_ALL, 'c');if($c_bookid==$b_id):?>
+              <span class="big"><span>Chapter <?php echo $count++;?> - </span>&nbsp;<a href="../book.php?id=<?php echo $b_id?>&amp;c=<?php echo $c_id?>"><?php echo $c_title?></a></span>
+              <span class="small">Published: <?php echo date_format($c_publish)?> - Updated: <?php echo date_format($c_update)?></span>
+              <span class="small">Views: <?php echo $c_views?> - Wordcount: <?php echo $c_wordcount?></span>
+              <br style="clear: both" />
+<?php else:$chapters->data_seek($crows - 1);break;endif;endwhile?>
+          </li>
+<?php endwhile;$books->close();$chapters->close();?>
+          </ul>
+<?php endif?>

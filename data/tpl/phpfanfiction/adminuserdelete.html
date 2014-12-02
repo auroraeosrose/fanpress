@@ -1,0 +1,86 @@
+<?php
+/**
+ * adminuserdelete.html - list of users and form to search for admin delete page
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminuserdelete.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Delete Users</h1>
+          <ul>
+            <li>[<a href="user.php?a=0" title="List current users">List</a>]</li>
+            <li>[<a href="user.php?a=1" title="Create new user">New</a>]</li>
+            <li>[<a href="user.php?a=2" title="Edit existing user">Edit</a>]</li>
+            <li>[<strong title="Delete users">Delete</strong>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if(!isset($total) or $total == 0):?>
+          <form action="user.php" method="post">
+            <fieldset>
+            <legend>Find User</legend>
+              <input type="hidden" value="3" name="a" />
+              <label for="searchfind">Search For:</label> <input id="searchfind" name="string" type="text" />
+              <span>
+                Boolean Mode can use + to require a word, - to exlude a word, &lt; and &gt; to change word relevance value, () to group
+                sub-expressions, ~ to mark noise words (a word you might not want to exclude altogether, but it shouldn't be as important),
+               * as a wildcard so ba* will match ball and bat, and double quotes around literal strings.
+              </span>
+              <label for="searchname">Search Name:</label> <div><input  id="searchname" name="name" type="checkbox" /></div>
+              <label for="searchemail">Search Email:</label> <div><input  id="searchemail" name="email" type="checkbox" /></div>
+              <label for="searchbool">Use Boolean Mode:</label> <div><input  id="searchbool" name="bool" type="checkbox" /></div>
+              <label for="searchdate">Search by Date:</label> <div id="searchdate"><input name="month" type="text" maxlength="2"/>/<input name="day" type="text" maxlength="2" />/<input name="year" type="text" maxlength="4" /></div> <span>Search by a month, day, or year, or any combination.  For example, to find all the posts from January of 2000, enter 01 in the first box, leave the second blank, and enter 2000 in the last box</span>
+              <input type="submit" value="Find User" name="search" />
+            </fieldset>
+          </form>
+<?php else:?>
+          <script language="javascript" type="text/javascript">
+          function selectAll(obj) {
+            var checkBoxes = document.getElementsByTagName('input');
+            for (i = 0; i < checkBoxes.length; i++) {
+              if (obj.checked == true) {
+                checkBoxes[i].checked = true;
+              } else {
+                checkBoxes[i].checked = false;
+              }
+            }
+          }
+          </script>
+          <form action="user.php" method="post">
+            <input type="hidden" value="3" name="a" />
+            <ul class="list">
+<?php while($row = $users->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'u');?>
+            <li>
+             <span class="big"> <span><?php echo $offset++;?>.</span> <a href="user.php?a=2&amp;id=<?php echo $u_id?>"><?php echo $u_name?></a></span>
+                <span><input type="checkbox" name="delete[<?php echo $u_id?>]" value="1"/></span>
+                <span>Since: <?php echo date_format($u_date)?></span>
+                <br style="clear: both"/>
+              </li>
+<?php endwhile;$users->close();?>
+              <li>
+                <span class="big" ><input type="submit" value="Delete Checked" name="submit" /></span>
+                <span><input type="checkbox" name="checkall" onclick="selectAll(this);"/></span>
+                <span>&nbsp;</span>
+                <br style="clear: both"/>
+              </li>
+            </ul>
+          </form>
+<?php $querystring = 'user.php?a=3&amp;f=1';include('paging.html')?>
+<?php endif;if(isset($total) and $total == 0):?>
+          <p class="error">
+            No Matches Found
+          </p>
+<?php endif?>
+

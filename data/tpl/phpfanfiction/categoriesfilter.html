@@ -1,0 +1,99 @@
+<?php
+/**
+ * categoriesfilter.html - filter form for categories page
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: categoriesfilter.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <div class="box">
+            <form action="browse.php" method="get">
+              <fieldset>
+                <legend>Filter</legend>
+                <input type="hidden" name="a" value="1" />
+                <input type="hidden" name="cid" value="<?php if(isset($_GET['cid'])){echo $_GET['cid'];}else{echo 0;}?>" />
+                <label for="sortorder">Sort Order:</label>
+                <select id="sortorder" name="o">
+                  <option value="0"<?php if(isset($_GET['o']) and $_GET['o']==0){echo 'selected="selected"';}?>>Last Update</option>
+                  <option value="1"<?php if(isset($_GET['o']) and $_GET['o']==1){echo 'selected="selected"';}?>>Publish Date</option>
+                  <option value="2"<?php if(isset($_GET['o']) and $_GET['o']==2){echo 'selected="selected"';}?>>Title</option>
+                </select>
+                <label for="filterstyles">Styles:</label>
+                <select id="filterstyles" name="sid[]" multiple="multiple" class="multiple">
+<?php while($row = $stylelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"<?php if(isset($_GET['sid']) and ((is_array($_GET['sid']) and in_array($c_id, $_GET['sid'])) or (!is_array($_GET['sid']) and $_GET['sid'] == $c_id))){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile?>
+                </select>
+                <label for="filtertypes">Types:</label>
+                <select id="filtertypes" name="tid[]" multiple="multiple" class="multiple">
+<?php while($row = $typelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"<?php if(isset($_GET['tid']) and ((is_array($_GET['tid']) and in_array($c_id, $_GET['tid'])) or (!is_array($_GET['tid']) and $_GET['tid'] == $c_id))){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile?>
+                </select>
+                <label for="filterchar">Characters:</label>
+                <select id="filterchar" name="chid[]" multiple="multiple" class="multiple">
+<?php while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"<?php if(isset($_GET['chid']) and ((is_array($_GET['chid']) and in_array($c_id, $_GET['chid'])) or (!is_array($_GET['chid']) and $_GET['chid'] == $c_id))){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile?>
+                </select>
+                <label for="filtergenre">Genres:</label>
+                <select id="filtergenre" name="gid[]" multiple="multiple" class="multiple">
+<?php while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"<?php if(isset($_GET['gid']) and ((is_array($_GET['gid']) and in_array($c_id, $_GET['gid'])) or (!is_array($_GET['gid']) and $_GET['gid'] == $c_id))){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile?>
+                </select>
+                <label for="filterratings">Ratings:</label>
+                <select id="filterratings" name="rid[]" multiple="multiple" class="multiple">
+<?php while($row = $ratinglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"<?php if(isset($_GET['rid']) and ((is_array($_GET['rid']) and in_array($c_id, $_GET['rid'])) or (!is_array($_GET['rid']) and $_GET['rid'] == $c_id))){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile?>
+                </select>
+                <label for="filterwarnings">Warnings:</label>
+                <select id="filterwarnings" name="wid[]" multiple="multiple" class="multiple">
+<?php while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"<?php if(isset($_GET['wid']) and ((is_array($_GET['wid']) and in_array($c_id, $_GET['wid'])) or (!is_array($_GET['wid']) and $_GET['wid'] == $c_id))){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile?>
+                </select>
+                <label for="filterlength">Wordcount:</label>
+                <select id="filterlength" name="w">
+                  <option value="0"<?php if(isset($_GET['w']) and $_GET['w']==0){echo 'selected="selected"';}?>>All</option>
+                  <option value="1"<?php if(isset($_GET['w']) and $_GET['w']==1){echo 'selected="selected"';}?>>&gt; 1000</option>
+                  <option value="2"<?php if(isset($_GET['w']) and $_GET['w']==2){echo 'selected="selected"';}?>>&gt; 5000</option>
+                  <option value="3"<?php if(isset($_GET['w']) and $_GET['w']==3){echo 'selected="selected"';}?>>&gt; 10,000</option>
+                  <option value="4"<?php if(isset($_GET['w']) and $_GET['w']==4){echo 'selected="selected"';}?>>&gt; 25,000</option>
+                  <option value="5"<?php if(isset($_GET['w']) and $_GET['w']==5){echo 'selected="selected"';}?>>&gt; 50,000</option>
+                  <option value="6"<?php if(isset($_GET['w']) and $_GET['w']==6){echo 'selected="selected"';}?>>&gt; 75,000</option>
+                  <option value="7"<?php if(isset($_GET['w']) and $_GET['w']==7){echo 'selected="selected"';}?>>&gt; 100,000</option>
+                </select>
+                <label for="filterrank">Ranking:</label>
+                <select id="filterrank" name="r">
+                  <option value="0"<?php if(isset($_GET['r']) and $_GET['r']==0){echo 'selected="selected"';}?>>All</option>
+                  <option value="1"<?php if(isset($_GET['r']) and $_GET['r']==1){echo 'selected="selected"';}?>>&gt; 1</option>
+                  <option value="2"<?php if(isset($_GET['r']) and $_GET['r']==2){echo 'selected="selected"';}?>>&gt; 2</option>
+                  <option value="3"<?php if(isset($_GET['r']) and $_GET['r']==3){echo 'selected="selected"';}?>>&gt; 3</option>
+                  <option value="4"<?php if(isset($_GET['r']) and $_GET['r']==4){echo 'selected="selected"';}?>>&gt; 4</option>
+                  <option value="5"<?php if(isset($_GET['r']) and $_GET['r']==5){echo 'selected="selected"';}?>>&gt; 5</option>
+                  <option value="6"<?php if(isset($_GET['r']) and $_GET['r']==6){echo 'selected="selected"';}?>>&gt; 6</option>
+                  <option value="7"<?php if(isset($_GET['r']) and $_GET['r']==7){echo 'selected="selected"';}?>>&gt; 7</option>
+                  <option value="8"<?php if(isset($_GET['r']) and $_GET['r']==8){echo 'selected="selected"';}?>>&gt; 8</option>
+                  <option value="9"<?php if(isset($_GET['r']) and $_GET['r']==9){echo 'selected="selected"';}?>>&gt; 9</option>
+                </select>
+                <label for="filterstatus">Status:</label>
+                <select id="filterstatus" name="u">
+                  <option value="0"<?php if(isset($_GET['u']) and $_GET['u']==0){echo 'selected="selected"';}?>>All</option>
+                  <option value="1"<?php if(isset($_GET['u']) and $_GET['u']==1){echo 'selected="selected"';}?>>Unfinished</option>
+                  <option value="2"<?php if(isset($_GET['u']) and $_GET['u']==2){echo 'selected="selected"';}?>>Completed</option>
+                </select>
+                <input type="submit" value="Filter" name="submit" />
+              </fieldset>
+            </form>
+          </div>

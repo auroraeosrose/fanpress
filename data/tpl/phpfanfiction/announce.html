@@ -1,0 +1,31 @@
+<?php
+/**
+ * announce.html - list announcements
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: announce.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Site Announcements</h1>
+<?php if($total == 0):?>
+          <p class="error">
+            There are no Announcements
+          </p>
+<?php endif?>
+<?php while($row = $announcements->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'a');?>
+          <h3><?php echo $a_title?></h3>
+          <div>
+            <?php echo indent(format($a_text), 12, ' ')?> 
+            <p class="small"><?php echo date_format($a_date)?></p>
+          </div>
+<?php endwhile;$announcements->close();?>
+<?php $querystring = 'index.php?';include('paging.html')?>

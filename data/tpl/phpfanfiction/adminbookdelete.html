@@ -1,0 +1,165 @@
+<?php
+/**
+ * adminbookdelete.html - list of books to delete
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminbookdelete.html,v 1.1 2004/07/21 00:03:27 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Delete Books</h1>
+          <ul>
+            <li>[<a href="book.php?a=0" title="List current book">List</a>]</li>
+            <li>[<a href="book.php?a=1" title="Create new book">New</a>]</li>
+            <li>[<a href="book.php?a=2" title="Edit existing book">Edit</a>]</li>
+            <li>[<strong title="Delete book">Delete</strong>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if(!isset($total) or $total == 0):?>
+          <form action="book.php" method="post">
+            <fieldset>
+            <legend>Find Book</legend>
+              <input type="hidden" value="3" name="a" />
+              <label for="searchfind">Search For:</label> <input id="searchfind" name="string" type="text" />
+              <span>
+                Boolean Mode can use + to require a word, - to exlude a word, &lt; and &gt; to change word relevance value, () to group
+                sub-expressions, ~ to mark noise words (a word you might not want to exclude altogether, but it shouldn't be as important),
+               * as a wildcard so ba* will match ball and bat, and double quotes around literal strings.
+              </span>
+                <label for="booktitle">Book Title:</label> <div><input id="booktitle" name="btitle" type="checkbox" /></div><span>Search book titles</span>
+                <label for="booksummary">Book Summary:</label> <div><input id="booksummary" name="bsummary" type="checkbox" /></div><span>Search book summaries</span>
+                <label for="bookauthor">Author Name:</label> <div><input id="bookauthor" name="bauthor" type="checkbox" /></div><span>Search author names</span>
+                <label for="bookupdate">Update Date:</label> <span id="bookupdate"><input name="bumonth" type="text" maxlength="2"/>/<input name="buday" type="text" maxlength="2" />/<input name="buyear" type="text" maxlength="4" /></span><span>Search update date by month and/or day and/or year</span>
+                <label for="bookpublish">Publish Date:</label> <span id="bookpublish"><input name="bpmonth" type="text" maxlength="2"/>/<input name="bpday" type="text" maxlength="2" />/<input name="bpyear" type="text" maxlength="4" /></span><span>Search publish date by month and/or day and/or year</span>
+                <label for="bookcat">Categories:</label>
+                <select id="bookcat" name="bcats[]" multiple="multiple">
+<?php while($row = $catlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$catlist->close()?>
+                </select><span>Filter by Category</span><br/>
+                <label for="bookchar">Characters:</label>
+                <select id="bookchar" name="bchar[]" multiple="multiple">
+<?php while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$charlist->close()?>
+                </select><span>Filter by Characters</span><br/>
+                <label for="bookgenre">Genres:</label>
+                <select id="bookgenre" name="bgenre[]" multiple="multiple">
+<?php while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$genrelist->close()?>
+                </select><span>Filter by Genres</span><br/>
+                <label for="booktypes">Types:</label>
+                <select id="booktypes" name="btype[]" multiple="multiple">
+<?php while($row = $typelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$typelist->close()?>
+                </select><span>Filter by Types</span><br/>
+                <label for="bookstyles">Styles:</label>
+                <select id="bookstyles" name="bstyle[]" multiple="multiple">
+<?php while($row = $stylelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$stylelist->close()?>
+                </select><span>Filter by Types</span><br/>
+                <label for="bookratings">Ratings:</label>
+                <select id="bookratings" name="brating[]" multiple="multiple">
+<?php while($row = $ratinglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$ratinglist->close()?>
+                </select><span>Filter by Ratings</span><br/>
+                <label for="bookwarnings">Warnings:</label>
+                <select id="bookwarnings" name="bwarning[]" multiple="multiple">
+<?php while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$warninglist->close()?>
+                </select><span>Filter by Warnings</span><br/>
+                <label for="booklength">Wordcount:</label>
+                <select id="booklength" name="bcount">
+                  <option value="0">All</option>
+                  <option value="1">&gt; 1000</option>
+                  <option value="2">&gt; 5000</option>
+                  <option value="3">&gt; 10,000</option>
+                  <option value="4">&gt; 25,000</option>
+                  <option value="5">&gt; 50,000</option>
+                  <option value="6">&gt; 75,000</option>
+                  <option value="7">&gt; 100,000</option>
+                </select><span>Filter by Number of Words</span><br/>
+                <label for="bookrank">Ranking:</label>
+                <select id="bookrank" name="brank">
+                  <option value="0">All</option>
+                  <option value="1">&gt; 1</option>
+                  <option value="2">&gt; 2</option>
+                  <option value="3">&gt; 3</option>
+                  <option value="4">&gt; 4</option>
+                  <option value="5">&gt; 5</option>
+                  <option value="6">&gt; 6</option>
+                  <option value="7">&gt; 7</option>
+                  <option value="8">&gt; 8</option>
+                  <option value="9">&gt; 9</option>
+                </select><span>Filter by Ranking</span><br/>
+                <label for="bookstatus">Status:</label>
+                <select id="bookstatus" name="bstatus">
+                  <option value="0">All</option>
+                  <option value="1">Unfinished</option>
+                  <option value="2">Completed</option>
+                </select><span>Filter by Status</span>
+                <input type="submit" value="Find Book" name="search" />
+            </fieldset>
+          </form>
+<?php else:?>
+          <script language="javascript" type="text/javascript">
+          function selectAll(obj) {
+            var checkBoxes = document.getElementsByTagName('input');
+            for (i = 0; i < checkBoxes.length; i++) {
+              if (obj.checked == true) {
+                checkBoxes[i].checked = true;
+              } else {
+                checkBoxes[i].checked = false;
+              }
+            }
+          }
+          </script>
+          <form action="book.php" method="post">
+            <input type="hidden" value="3" name="a" />
+            <ul class="list">
+<?php while($row = $books->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'b');?>
+            <li>
+              <span class="big dark"><span><?php echo $offset++;?>.</span>&nbsp;<a href="book.php?a=2&amp;id=<?php echo $b_bookid?>"><?php echo $b_title?></a> by <?php echo group_concat($b_author, $b_authorid, 'author.php?a=2&amp;', 'id', '', ' and ');?> - <?php if($b_valid == 0){echo 'NOT VALID';}else{echo 'VALID';}?></span>
+                <span class="dark">Delete: <input type="checkbox" name="delete[<?php echo $b_bookid?>]" value="1"/></span>
+                <span class="small dark">Published: <?php echo date_format($b_publish)?> - Updated: <?php echo date_format($b_update)?></span>
+                <br style="clear: both" />
+                <span class="big small"><a href="../browse.php?a=2&amp;cid=<?php echo $b_catid?>"><?php echo $b_catname?></a> : <a href="../browse.php?a=2&amp;tid=<?php echo $b_typeid?>"><?php echo $b_type?></a> : <a href="../browse.php?a=2&amp;sid=<?php echo $b_styleid?>"><?php echo $b_style?></a> : <?php echo group_concat($b_genre, $b_genreid, 'browse.php?a=2&amp;', 'gid', $nest, '/');?> : <a href="../browse.php?a=2&amp;rid=<?php echo $b_ratingid?>"><?php echo $b_rating?></a> : <?php echo group_concat($b_warning, $b_warningid, 'browse.php?a=2&amp;', 'wid', $nest, '/');?> : <?php echo group_concat($b_character, $b_characterid, 'browse.php?a=2&amp;', 'chid', $nest, ', ');?></span>
+                <span>Chapters: <?php echo $b_chapters?> Words: <?php echo $b_wordcount?></span><span><?php if($b_completed == 1){echo 'Completed';}else{echo 'Unfinished';}?></span>
+                <br style="clear: both" />
+                <span class="big"><?php echo $b_summary?></span>
+                <span><a href="../comment.php?id=<?php echo $b_bookid?>">Comments: <?php echo $b_comments?></a></span><?php echo rank_images($b_ranking, $nest)?>
+                <br style="clear: both" />
+              </li>
+<?php endwhile;$books->close();?>
+              <li>
+                <span class="big" ><input type="submit" value="Delete Checked" name="submit" /></span>
+                <span>Check All: <input type="checkbox" name="checkall" onclick="selectAll(this);"/></span>
+                <span>&nbsp;</span>
+                <br style="clear: both"/>
+              </li>
+            </ul>
+          </form>
+<?php $querystring = 'book.php?a=3&amp;f=1';include('paging.html')?>
+<?php endif;if(isset($total) and $total == 0):?>
+          <p class="error">
+            No Matches Found
+          </p>
+<?php endif?>
+

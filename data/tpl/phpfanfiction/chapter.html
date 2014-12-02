@@ -1,0 +1,98 @@
+<?php
+/**
+ * chapter.html - view book chapter
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: chapter.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($chapter, EXTR_PREFIX_ALL, 'c')?>
+          <h1><?php echo $c_chtitle?></h1>
+          <h3>
+            <a href="book.php?id=<?php echo $c_bookid?>"><?php echo $c_title?></a> by: <?php echo group_concat($c_author, $c_authorid, 'author.php?', 'id', $nest, ' and ');?> 
+          </h3>
+          <div class="story">
+            <form action="book.php" method="get">
+              <div>
+<?php if(!empty($prev)):?>
+                <a href="book.php?id=<?php echo $c_bookid?>&amp;c=<?php echo $prev?>">&lt;&lt; Previous</a>
+<?php endif?>
+                <input type="hidden" name="id" value="<?php echo $c_bookid?>" />
+                <select name="c" onchange="javascript:this.form.submit();">
+                  <option value="">Choose a Chapter</option>
+<?php while($row = $chapterlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_title?></option>
+<?php endwhile;$chapterlist->data_seek(0)?>
+                </select>
+              </div>
+            </form>
+            <form action="comment.php" method="get">
+              <div>
+<?php if(!empty($next)):?>
+                <a href="book.php?id=<?php echo $c_bookid?>&amp;c=<?php echo $next?>">Next &gt;&gt;</a>
+<?php else:?>
+                <a href="book.php?id=<?php echo $c_bookid?>">Index</a>
+<?php endif?>
+                <input type="hidden" name="id" value="<?php echo $c_bookid?>" />
+                <input type="hidden" name="c" value="<?php echo $_GET['c']?>" />
+<?php if(isset($user) and $user != FALSE):?>
+                <select name="a" onchange="javascript:this.form.submit();">
+                  <option value="">Choose an Action</option>
+                  <option value="0">View Comments</option>
+                  <option value="1">Add Comment</option>
+                  <option value="2">Add Book to Favorites</option>
+                </select>
+<?php endif?>
+              </div>
+            </form>
+            <hr/>
+            <?php echo indent(format($c_chapter), 12)?> 
+            <hr/>
+            <form action="book.php" method="get">
+              <div>
+<?php if(!empty($prev)):?>
+                <a href="book.php?id=<?php echo $c_bookid?>&amp;c=<?php echo $prev?>">&lt;&lt; Previous</a>
+<?php endif?>
+                <input type="hidden" name="id" value="<?php echo $c_bookid?>" />
+                <select name="c" onchange="javascript:this.form.submit();">
+                  <option value="">Choose a Chapter</option>
+<?php while($row = $chapterlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                  <option value="<?php echo $c_id?>"><?php echo $c_title?></option>
+<?php endwhile;$chapterlist->close()?>
+                </select>
+              </div>
+            </form>
+            <form action="comment.php" method="get">
+              <div>
+<?php if(!empty($next)):?>
+                <a href="book.php?id=<?php echo $c_bookid?>&amp;c=<?php echo $next?>">Next &gt;&gt;</a>
+<?php else:?>
+                <a href="book.php?id=<?php echo $c_bookid?>">Index</a>
+<?php endif?>
+                <input type="hidden" name="id" value="<?php echo $c_bookid?>" />
+                <input type="hidden" name="c" value="<?php echo $_GET['c']?>" />
+<?php if(isset($user) and $user != FALSE):?>
+                <select name="a" onchange="javascript:this.form.submit();">
+                  <option value="">Choose an Action</option>
+                  <option value="0">View Comments</option>
+                  <option value="1">Add Comment</option>
+                  <option value="2">Add Book to Favorites</option>
+                </select>
+<?php endif?>
+              </div>
+            </form>
+            <br style="clear: both"/>
+          </div>
+          <p class="dark small">
+            Update: <?php echo date_format($c_chupdate)?> | Published: <?php echo date_format($c_chpublish)?> 
+          </p>
+

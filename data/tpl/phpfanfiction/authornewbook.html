@@ -1,0 +1,329 @@
+<?php
+/**
+ * authornewbook.html - forms to create new book
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authornewbook.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Create New Book</h1>
+          <ul>
+            <li title="Create New Book">[<strong>New</strong>]</li>
+            <li>[<a href="book.php?a=1" title="Edit Current Books">Edit</a>]</li>
+            <li>[<a href="book.php?a=2" title="Delete Current Book">Delete</a>]</li>
+            <li>[<a href="book.php?a=3" title="View Book Statistics">Statistics</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if($step == 0):?>
+          <h3>Create a New Book</h3>
+          <p>
+            Welcome to the book creation wizard.  This is a step by step process that
+            will help you create a new book for inclusion in the library.  First of all,
+            books are built on the chapter framework.  Single part stories are treated
+            as books with only one chapter.  Second, all books in the library must be approved
+            by an editor before being published.  This approval process is objective in nature,
+            it is designed to weed out stories with extremely poor grammar and spelling.  As
+            long as the following criteria are met, your story should be accepted:
+          </p>
+          <ol>
+            <li>The story must be related to Sailor Moon in some way.  It does not have to be shitennou and senshi, although there is a special category for those stories.</li>
+            <li>Chapters must be a minimum of 500 words, and have presentable spelling, grammar, and some semblence of a plot.</li>
+            <li>Any type of story is accepted, even those with violence, language, and sex, as long as they are rated properly and have the proper warnings applied.</li>
+            <li>Canon homosexual couples are fine, but non-canon homosexual couples are discouraged.  Exceptions can be made for really well written pieces.</li>
+            <li>Mary Sue stories are also discouraged.  Exceptions can be made for really well written pieces.</li>
+            <li>Author notes belong on the book homepage, not within the chapters.  Notes can be as long as you like and changed at any time.</li>
+          </ol>
+          <p>
+            To create your book, you'll need at least one chapter completed and ready for uploading.  After you finish the wizard,
+            your book will be placed in a queue, where an editor will review it and either accept or reject it.  If a story is rejected,
+            the editor will include specific instructions on what needs to be fixed.  If a story is accepted, it will be immediately published
+            on the site.  You may then edit the text of the chapter if you wish.  But be aware that abuse of chapter editing after approval will
+            result in expulsion from the site.  You may also use the book edit feature to upload additional chapters.
+          </p>
+          <form action="book.php" method="post">
+            <fieldset>
+              <legend>Book Creation Wizard</legend>
+              <input type="hidden" name="a" value="0" />
+              <input type="hidden" name="step" value="1" />
+              <input type="submit" value="Begin Book Creation Wizard" name="submit" />
+            </fieldset>
+          </form>
+<?php elseif($step == 1):?>
+          <script type="text/javascript">
+            function showDescription(value) {
+              for(x = 0; x <= <?php echo ($catlist->num_rows - 1)?>; x++) {
+                document.getElementById('desc' + x).style.display='none';
+              }
+              document.getElementById('desc' + value).style.display='block';
+            }
+            function showDescription2(value) {
+              for(x = 0; x <= <?php echo ($stylelist->num_rows - 1)?>; x++) {
+               document.getElementById('desc2' + x).style.display='none';
+              }
+              document.getElementById('desc2' + value).style.display='block';
+            }
+            function showDescription3(value) {
+              for(x = 0; x <= <?php echo ($typelist->num_rows - 1)?>; x++) {
+               document.getElementById('desc3' + x).style.display='none';
+              }
+              document.getElementById('desc3' + value).style.display='block';
+            }
+            function showDescription4(value) {
+              for(x = 0; x <= <?php echo ($ratinglist->num_rows - 1)?>; x++) {
+               document.getElementById('desc4' + x).style.display='none';
+              }
+              document.getElementById('desc34' + value).style.display='block';
+            }
+          </script>
+          <form action="book.php" method="post" enctype="multipart/form-data">
+            <fieldset>
+              <legend>Book Creation Wizard - Step 1</legend>
+              <input type="hidden" name="a" value="0" />
+              <input type="hidden" name="step" value="2" />
+<?php if(isset($_POST['gid'])):foreach($_POST['gid'] as $value):?>
+              <input type="hidden" name="gid[]" value="<?php echo $value?>" />
+<?php endforeach;endif?>
+<?php if(isset($_POST['chid'])):foreach($_POST['chid'] as $value):?>
+              <input type="hidden" name="chid[]" value="<?php echo $value?>" />
+<?php endforeach;endif?>
+<?php if(isset($_POST['wid'])):foreach($_POST['wid'] as $value):?>
+              <input type="hidden" name="wid[]" value="<?php echo $value?>" />
+<?php endforeach;endif?>
+<?php if(isset($_POST['chtitle'])):?>
+              <input type="hidden" name="chtitle" value="<?php echo htmlentities($_POST['chtitle'])?>" />
+<?php endif;if(isset($_POST['text'])):?>
+              <input type="hidden" name="text" value="<?php echo htmlentities($_POST['text'])?>" />
+<?php endif;if(isset($_POST['authors'])):?>
+              <input type="hidden" name="authors" value="<?php echo htmlentities($_POST['authors'])?>" />
+<?php endif?>
+              <input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+              <label for="booktitle">Title:</label> <input name="title" id="booktitle" type="text"<?php if(isset($_POST['title'])){echo ' value="'.$_POST['title'].'"';}?>/> <span>A title for your story, unique titles are easier to remember and find</span>
+              <label for="booksummary">Summary:</label> <textarea name="summary" id="booksummary" rows="10" cols="30"><?php if(isset($_POST['summary'])){echo $_POST['summary'];}?></textarea> <span>A fairly short summary describing your book.  Summaries like "I'm not good at summaries" will not be accepted.  Ask a friend to help.</span>
+              <br/><label for="filtercat">Category:</label>
+              <select id="filtercat" name="cid" onchange="javascript:showDescription(this.selectedIndex)">
+<?php while($row = $catlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['cid']) and $_POST['cid'] == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$catlist->data_seek(0)?>
+              </select> <span>A category for your story, the category description will appear when you select a category, so you're sure to find the right one.<br/>
+<?php $x=0; while($row = $catlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc<?php echo $x?>"<?php if((isset($_POST['cid']) and $_POST['cid'] != $c_id) or (!isset($_POST['cid']) and $x > 0)){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$catlist->close()?></span>
+              <br/><label for="filtertype">Type:</label>
+              <select id="filtertype" name="tid" onchange="javascript:showDescription2(this.selectedIndex)">
+<?php while($row = $typelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['tid']) and $_POST['tid'] == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$typelist->data_seek(0)?>
+              </select> <span>A time period or type of story.<br/>
+<?php $x=0; while($row = $typelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc2<?php echo $x?>"<?php if((isset($_POST['tid']) and $_POST['tid'] != $c_id) or (!isset($_POST['tid']) and $x > 0)){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$typelist->close()?></span>
+              <br/><label for="filterstyle">Style:</label>
+              <select id="filterstyle" name="sid" onchange="javascript:showDescription3(this.selectedIndex)">
+<?php while($row = $stylelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['sid']) and $_POST['sid'] == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$stylelist->data_seek(0)?>
+              </select> <span>A style of storyline.<br/>
+<?php $x=0; while($row = $stylelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc3<?php echo $x?>"<?php if((isset($_POST['sid']) and $_POST['sid'] != $c_id) or (!isset($_POST['sid']) and $x > 0)){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$stylelist->close()?></span>
+              <label for="filterratings">Rating:</label>
+              <select id="filterratings" name="rid" onchange="javascript:showDescription4(this.selectedIndex)">
+<?php while($row = $ratinglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['rid']) and $_POST['rid'] == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$ratinglist->data_seek(0)?>
+              </select>  <span>A rating for your story, the rating description will appear when you select a category, so you're sure to find the right one.  Please do not underrate your work, its better to have too high a rating.<br/>
+<?php $x=0; while($row = $ratinglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc4<?php echo $x?>"<?php if((isset($_POST['rid']) and $_POST['rid'] != $c_id) or (!isset($_POST['rid']) and $x > 0)){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$ratinglist->close()?></span>
+              <label for="booknotesfile">File:</label> <input id="booknotesfile" type="file" name="datafile" /> <span>You may upload a file in html, htm, or txt format for your author notes. Or you may cut and paste text into the text area.  Do not upload a file AND enter text.</span>
+              <label for="booknotestext">Text:</label> <textarea class="text" name="notes" id="booknotestext" rows="20" cols="30"><?php if(isset($_POST['notes'])){echo $_POST['notes'];}?></textarea>
+              <input type="submit" value="Proceed to Step 2" name="submit" />
+              <input type="submit" value="Start Over" name="back" />
+            </fieldset>
+          </form>
+<?php elseif($step == 2):?>
+          <script language="JavaScript">
+            function showDescription(value) {
+              for(x = 0; x <= <?php echo ($charlist->num_rows - 1)?>; x++) {
+               document.getElementById('desc' + x).style.display='none';
+              }
+              document.getElementById('desc' + value).style.display='block';
+            }
+            function showDescription2(value) {
+              for(x = 0; x <= <?php echo ($genrelist->num_rows - 1)?>; x++) {
+               document.getElementById('desc2' + x).style.display='none';
+              }
+              document.getElementById('desc2' + value).style.display='block';
+            }
+            function showDescription3(value) {
+              for(x = 0; x <= <?php echo ($warninglist->num_rows - 1)?>; x++) {
+               document.getElementById('desc3' + x).style.display='none';
+              }
+              document.getElementById('desc3' + value).style.display='block';
+            }
+          </script>
+          <form action="book.php" method="post">
+            <fieldset>
+              <legend>Create New Book - Step 2</legend>
+              <p>You may optionally add any number of genres, characters, and warnings to help in classifying your book</p>
+              <input type="hidden" name="a" value="0" />
+              <input type="hidden" name="step" value="3" />
+              <input type="hidden" name="cid" value="<?php echo $_POST['cid']?>" />
+              <input type="hidden" name="tid" value="<?php echo $_POST['tid']?>" />
+              <input type="hidden" name="rid" value="<?php echo $_POST['rid']?>" />
+              <input type="hidden" name="sid" value="<?php echo $_POST['sid']?>" />
+              <input type="hidden" name="title" value="<?php echo $_POST['title']?>" />
+              <input type="hidden" name="notes" value="<?php echo htmlentities($_POST['notes'])?>" />
+              <input type="hidden" name="summary" value="<?php echo htmlentities($_POST['summary'])?>" />
+<?php if(isset($_POST['chtitle'])):?>
+              <input type="hidden" name="chtitle" value="<?php echo htmlentities($_POST['chtitle'])?>" />
+<?php endif;if(isset($_POST['text'])):?>
+              <input type="hidden" name="text" value="<?php echo htmlentities($_POST['text'])?>" />
+<?php endif?>
+              <label for="filtercat">Character Descriptions:</label>
+              <select id="filtercat" onchange="javascript:showDescription(this.selectedIndex)">
+<?php while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$charlist->data_seek(0)?>
+              </select>
+<?php $x=0; while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc<?php echo $x?>"<?php if($x > 0){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$charlist->data_seek(0)?>
+              <br/><label for="filterchar">Characters:</label>
+              <select id="filterchar" name="chid[]" multiple="multiple" class="multiple">
+<?php while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['chid']) and is_array($_POST['chid']) and in_array($c_id, $_POST['chid'])){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$charlist->close()?>
+              </select><span>Click and drag for multiple consecutive characters, or hold ctl while clicking to select non-consecutive characters</span>
+              <br/><label for="filtercat1">Genre Descriptions:</label>
+              <select id="filtercat1" onchange="javascript:showDescription2(this.selectedIndex)">
+<?php while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$genrelist->data_seek(0)?>
+              </select>
+<?php $x=0; while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc2<?php echo $x?>"<?php if($x > 0){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$genrelist->data_seek(0)?>
+              <br/><label for="filtergenre">Genres:</label>
+              <select id="filtergenre" name="gid[]" multiple="multiple" class="multiple">
+<?php while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['gid']) and is_array($_POST['gid']) and in_array($c_id, $_POST['gid'])){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$genrelist->close()?>
+              </select><span>Click and drag for multiple consecutive genres, or hold ctl while clicking to select non-consecutive genres</span>
+              <br/><label for="filtercat2">Warning Descriptions:</label>
+              <select id="filtercat2" onchange="javascript:showDescription3(this.selectedIndex)">
+<?php while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$warninglist->data_seek(0)?>
+              </select>
+<?php $x=0; while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+              <span id="desc3<?php echo $x?>"<?php if($x > 0){echo 'style="display: none"';}?>><?php echo $c_description?></span>
+<?php $x++;endwhile;$warninglist->data_seek(0)?>
+              <br/><label for="filterwarnings">Warnings:</label>
+              <select id="filterwarnings" name="wid[]" multiple="multiple" class="multiple">
+<?php while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['wid']) and is_array($_POST['wid']) and in_array($c_id, $_POST['wid'])){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$warninglist->close()?>
+              </select><span>Click and drag for multiple consecutive genres, or hold ctl while clicking to select non-consecutive genres</span>
+              <br/><label for="addauthors">Add Authors:</label>
+              <input type="text" name="authors" id="addauthors"<?php if(isset($_POST['authors'])){echo ' value="'.htmlentities($_POST['authors']).'"';}?>/>
+              <span>This library allows books to have an unlimited number of authors.  But multiple authors work so that every author you include has full control over the book.  That means your co-authors can edit and delete the chapters and book exactly the way you can.  So be sure you trust anyone you make a co-author.  Enter a comma seperated list of pen names, remember names are case sensitive</span>
+              <input type="submit" value="Proceed to Step 3"  name="submit" />
+              <input type="submit" value="Return to Step 1" name="back" />
+            </fieldset>
+          </form>
+<?php elseif($step == 3):?>
+          <form action="book.php" method="post" enctype="multipart/form-data">
+            <fieldset>
+              <legend>Book Creation Wizard - Step 3</legend>
+              <p>Now you need to upload or enter your first chapter for your book.</p>
+              <input type="hidden" name="a" value="0" />
+              <input type="hidden" name="step" value="4" />
+              <input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+              <input type="hidden" name="sid" value="<?php echo $_POST['sid']?>" />
+              <input type="hidden" name="cid" value="<?php echo $_POST['cid']?>" />
+              <input type="hidden" name="tid" value="<?php echo $_POST['tid']?>" />
+              <input type="hidden" name="rid" value="<?php echo $_POST['rid']?>" />
+              <input type="hidden" name="title" value="<?php echo htmlentities($_POST['title'])?>" />
+              <input type="hidden" name="notes" value="<?php echo htmlentities($_POST['notes'])?>" />
+              <input type="hidden" name="summary" value="<?php echo htmlentities($_POST['summary'])?>" />
+<?php if(isset($_POST['gid'])):foreach($_POST['gid'] as $value):?>
+              <input type="hidden" name="gid[]" value="<?php echo $value?>" />
+<?php endforeach;endif?>
+<?php if(isset($_POST['chid'])):foreach($_POST['chid'] as $value):?>
+              <input type="hidden" name="chid[]" value="<?php echo $value?>" />
+<?php endforeach;endif?>
+<?php if(isset($_POST['wid'])):foreach($_POST['wid'] as $value):?>
+              <input type="hidden" name="wid[]" value="<?php echo $value?>" />
+<?php endforeach;endif;if(isset($_POST['authors'])):?>
+              <input type="hidden" name="authors" value="<?php echo htmlentities($_POST['authors'])?>" />
+<?php endif?>
+              <label for="booktitle">Title:</label> <input name="chtitle" id="booktitle" type="text"<?php if(isset($_POST['chtitle'])){echo ' value="'.$_POST['chtitle'].'"';}?>/> <span>A title for your story, unique titles are easier to remember and find</span>
+              <label for="booknotesfile">File:</label> <input id="booknotesfile" type="file" name="datafile" /> <span>You may upload a file in html, htm, or txt format for your author notes. Or you may cut and paste text into the text area.  Do not upload a file AND enter text.</span>
+              <label for="booknotestext">Text:</label> <textarea name="text" class="text" id="booknotestext" rows="20" cols="30"><?php if(isset($_POST['text'])){echo $_POST['text'];}?></textarea>
+              <input type="submit" value="Proceed to Step 4"  name="submit" />
+              <input type="submit" value="Return to Step 2" name="back" />
+            </fieldset>
+          </form>
+<?php elseif($step == 4):?>
+          <p>Please look over the information below.  If you see any errors, please go back and correct them.  If there are no errors, you may submit your book to the editor's queue.</p>
+          <h3>
+            <?php echo $_POST['title']?> by <?php if(isset($_POST['authors'])){echo $_POST['authors'].', ';} echo $authorname."\n"?>
+          </h3>
+          <div class="story">
+            Summary:
+            <?php echo indent(format($_POST['summary']), 12)?> 
+            <hr />
+            Author Notes:
+            <?php echo indent(format($_POST['notes']), 12)?> 
+            <hr />
+            Chapter: <?php echo $_POST['chtitle']?>
+            <?php echo indent(format($_POST['text']), 12)?> 
+          </div>
+          <p class="dark small">
+            Category: <?php echo $catname?> | Type: <?php echo $type?> | Style: <?php echo $style?> | Rating: <?php echo $rating?> |
+            Characters: <?php echo $characters?> | Genres: <?php echo $genres?> | Warnings: <?php echo $warnings?> 
+          </p>
+          <form action="book.php" method="post">
+            <fieldset>
+              <legend>Book Creation Wizard - Step 4</legend>
+              <input type="hidden" name="a" value="0" />
+              <input type="hidden" name="step" value="5" />
+              <input type="hidden" name="sid" value="<?php echo $_POST['sid']?>" />
+              <input type="hidden" name="tid" value="<?php echo $_POST['tid']?>" />
+              <input type="hidden" name="cid" value="<?php echo $_POST['cid']?>" />
+              <input type="hidden" name="rid" value="<?php echo $_POST['rid']?>" />
+              <input type="hidden" name="title" value="<?php echo $_POST['title']?>" />
+              <input type="hidden" name="notes" value="<?php echo $_POST['notes']?>" />
+              <input type="hidden" name="summary" value="<?php echo $_POST['summary']?>" />
+<?php if(isset($_POST['gid'])):foreach($_POST['gid'] as $value):?>
+              <input type="hidden" name="gid[]" value="<?php echo $value?>" />
+<?php endforeach;endif?>
+<?php if(isset($_POST['chid'])):foreach($_POST['chid'] as $value):?>
+              <input type="hidden" name="chid[]" value="<?php echo $value?>" />
+<?php endforeach;endif?>
+<?php if(isset($_POST['wid'])):foreach($_POST['wid'] as $value):?>
+              <input type="hidden" name="wid[]" value="<?php echo $value?>" />
+<?php endforeach;endif;if(isset($_POST['authors'])):?>
+              <input type="hidden" name="authors" value="<?php echo htmlentities($_POST['authors'])?>" />
+<?php endif?>
+              <input type="hidden" name="chtitle" value="<?php echo $_POST['chtitle']?>" />
+              <input type="hidden" name="text" value="<?php echo $_POST['text']?>" />
+              <input type="submit" value="Finish Book Creation Wizard" name="submit"/>
+              <input type="submit" value="Return to Step 3" name="back" />
+            </fieldset>
+          </form>
+<?php endif?>

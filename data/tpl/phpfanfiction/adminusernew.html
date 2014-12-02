@@ -1,0 +1,41 @@
+<?php
+/**
+ * adminusernew.html - admin form to create new user
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminusernew.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>New User</h1>
+          <ul>
+            <li>[<a href="user.php?a=0" title="List current users">List</a>]</li>
+            <li>[<strong title="Create new user">New</strong>]</li>
+            <li>[<a href="user.php?a=2" title="Edit existing user">Edit</a>]</li>
+            <li>[<a href="user.php?a=3" title="Delete users">Delete</a>]</li>
+          </ul>
+          <p>Use edit on the newly create user to change additional options and settings, validate the user by hand, or send a validation message.</p>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <form action="user.php" method="post" id="new">
+            <fieldset>
+            <legend>Create User</legend>
+              <input type="hidden" value="1" name="a" />
+              <label for="username">Name:</label> <input name="name" id="username" type="text" /> <span>User names must be unique, longer than three letters, and are case sensitive.</span>
+              <label for="userpassword">Password:</label> <input id="userpassword" name="password" type="password"  /> <span>Passwords must be at least 6 letters long.  Acronyms work well.</span>
+              <label for="useremail">Email:</label> <input id="useremail" name="email" type="text" /> <span>Email address in user@domain.tld format.</span>
+              <label for="userbirthday">Birthdate:</label> <div id="userbirthday"><input name="month" type="text" maxlength="2"/>/<input name="day" type="text" maxlength="2" />/<input name="year" type="text" maxlength="4" /></div> <span>Birthdate in MM/DD/YYYY format.</span>
+              <input type="submit" value="Create User" name="submit" />
+            </fieldset>
+          </form>

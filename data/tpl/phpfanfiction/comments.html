@@ -1,0 +1,38 @@
+<?php
+/**
+ * comments.html - list book comments
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: comments.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($book, EXTR_PREFIX_ALL, 'b')?>
+          <h1>Book Comments for <a href="book.php?id=<?php echo $b_bookid?>"><?php echo $b_title?></a></h1>
+<?php if($total == 0):?>
+          <p class="error">
+            There are no Comments
+          </p>
+<?php else:?>
+<?php while($row = $comments->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c');?>
+          <h3><a href="user.php?id=<?php echo $c_id?>"><?php echo $c_name?></a></h3>
+          <div class="story">
+            <?php echo indent(format($c_text), 12)?> 
+            <hr />
+            <div><?php echo indent(format($c_reply), 12)?></div>
+            <span class="small"><?php echo date_format($c_date)?></span>
+          </div>
+<?php endwhile;$comments->close();?>
+<?php $querystring = 'comment.php?a=0&amp;id='.$_GET['id'].'&amp;';include('paging.html')?>
+<?php endif?>
+          <h4>
+            <a href="comment.php?a=1&amp;id=<?php echo $_GET['id']?>">Leave a Comment</a>
+          </h4>

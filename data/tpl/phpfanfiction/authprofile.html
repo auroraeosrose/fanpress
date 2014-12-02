@@ -1,0 +1,39 @@
+<?php
+/**
+ * authprofile.html - form for author to edit profile
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authprofile.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($authorinfo, EXTR_PREFIX_ALL, 'a');?>
+          <h1>Edit Author Profile</h1>
+          <ul>
+            <li title="Edit author profile information">[<strong>Profile</strong>]</li>
+            <li>[<a href="book.php?a=0" title="Manage all books">Books</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <form action="index.php" method="post">
+            <fieldset>
+              <legend>Change Profile Information</legend>
+              <span>ID: #<?php echo $a_id?></span> <span>Author since <?php echo date_format($a_date)?></span><span>Basic Author Information</span>
+              <label for="profilename">Name:</label> <input id="profilename" name="name" type="text" value="<?php echo $a_name?>"/> <span>Author names must be unique, and are case sensitive.  Changing your author name often can confuse readers.</span>
+              <label for="profileemail">Contact Email:</label> <input id="profileemail" type="text" name="email" value="<?php echo $a_email?>" /><span>Your author email address, this should be accessible and not overly full if you want notices when your books are accepted</span>
+              <label for="profiletext">Text:</label> <textarea id="profiletext" name="text" rows="20" cols="20"><?php echo $a_text?></textarea> <span>Write whatever you'd like to display in your profile.  No html allowed.</span>
+              <input type="submit" value="Change Profile Information" name="submit" />
+            </fieldset>
+          </form>
+

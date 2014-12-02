@@ -1,0 +1,90 @@
+<?php
+/**
+ * adminbooknew.html - create new book
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminbooknew.html,v 1.1 2004/07/20 23:31:14 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>New Book</h1>
+          <ul>
+            <li>[<a href="book.php?a=0" title="List current book.">List</a>]</li>
+            <li>[<strong title="Create new book.">New</strong>]</li>
+            <li>[<a href="book.php?a=2" title="Edit existing book.">Edit</a>]</li>
+            <li>[<a href="book.php?a=3" title="Delete book.">Delete</a>]</li>
+          </ul>
+          <p>You must enter a valid authorname to link the book.</p>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <form action="book.php" method="post" enctype="multipart/form-data">
+            <fieldset>
+            <legend>Create Book</legend>
+              <input type="hidden" name="a" value="1" />
+              <input type="hidden" name="MAX_FILE_SIZE" value="52428800" />
+              <label for="booktitle">Title:</label> <input name="title" id="booktitle" type="text"<?php if(isset($_POST['title'])){echo ' value="'.$_POST['title'].'"';}?>/> <span>A title for your story, unique titles are easier to remember and find</span>
+              <label for="booksummary">Summary:</label> <textarea name="summary" id="booksummary" rows="10" cols="30"><?php if(isset($_POST['summary'])){echo $_POST['summary'];}?></textarea> <span>A fairly short summary describing your book.  Summaries like "I'm not good at summaries" will not be accepted.  Ask a friend to help.</span>
+              <br/><label for="filtercat">Category:</label>
+              <select id="filtercat" name="cid">
+<?php while($row = $catlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['cid']) and $_POST['cid'] == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$catlist->close()?>
+              </select> <span>A category for your story</span>
+              <br/><label for="filtertype">Type:</label>
+              <select id="filtertype" name="tid">
+<?php while($row = $typelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['tid']) and $_POST['tid'] == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$typelist->close()?>
+              </select> <span>A time period or type of story.</span>
+              <br/><label for="filterstyle">Style:</label>
+              <select id="filterstyle" name="sid" >
+<?php while($row = $stylelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['sid']) and $_POST['sid'] == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$stylelist->close()?>
+              </select> <span>A style of storyline.</span>
+              <label for="filterratings">Rating:</label>
+              <select id="filterratings" name="rid">
+<?php while($row = $ratinglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['rid']) and $_POST['rid'] == $c_id){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$ratinglist->close()?>
+              </select>  <span>A rating for your story</span>
+              <label for="booknotesfile">Notes File:</label> <input id="booknotesfile" type="file" name="notesfile" /> <span>You may upload a file in html, htm, or txt format for your author notes. Or you may cut and paste text into the text area.  Do not upload a file AND enter text.</span>
+              <label for="booknotestext">Notes Text:</label> <textarea class="text" name="notes" id="booknotestext" rows="20" cols="30"><?php if(isset($_POST['notes'])){echo $_POST['notes'];}?></textarea>
+              <label for="filterchar">Characters:</label>
+              <select id="filterchar" name="chid[]" multiple="multiple">
+<?php while($row = $charlist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['chid']) and is_array($_POST['chid']) and in_array($c_id, $_POST['chid'])){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$charlist->close()?>
+              </select><span>Click and drag for multiple consecutive characters, or hold ctl while clicking to select non-consecutive characters</span>
+              <br/><label for="filtergenre">Genres:</label>
+              <select id="filtergenre" name="gid[]" multiple="multiple">
+<?php while($row = $genrelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['gid']) and is_array($_POST['gid']) and in_array($c_id, $_POST['gid'])){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$genrelist->close()?>
+              </select><span>Click and drag for multiple consecutive genres, or hold ctl while clicking to select non-consecutive genres</span>
+              <br/><label for="filterwarnings">Warnings:</label>
+              <select id="filterwarnings" name="wid[]" multiple="multiple">
+<?php while($row = $warninglist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c')?>
+                <option value="<?php echo $c_id?>"<?php if(isset($_POST['wid']) and is_array($_POST['wid']) and in_array($c_id, $_POST['wid'])){echo 'selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$warninglist->close()?>
+              </select><span>Click and drag for multiple consecutive genres, or hold ctl while clicking to select non-consecutive genres</span>
+              <br/><label for="addauthors">Add Authors:</label>
+              <input type="text" name="authors" id="addauthors"<?php if(isset($_POST['authors'])){echo ' value="'.htmlentities($_POST['authors']).'"';}?>/>
+              <span>This library allows books to have an unlimited number of authors.  Enter a comma seperated list of pen names, remember names are case sensitive</span>
+              <label for="chaptertitle">Chapter Title:</label> <input name="chtitle" id="chaptertitle" type="text"<?php if(isset($_POST['chtitle'])){echo ' value="'.$_POST['chtitle'].'"';}?>/> <span>A title for your chapter, unique titles are easier to remember and find</span>
+              <label for="chapterfile">File:</label> <input id="chapterfile" type="file" name="chapterfile" /> <span>You may upload a file in html, htm, or txt format for your author notes. Or you may cut and paste text into the text area.  Do not upload a file AND enter text.</span>
+              <label for="chaptertext">Text:</label> <textarea name="text" class="chapter" id="chaptertext" rows="20" cols="30"><?php if(isset($_POST['text'])){echo $_POST['text'];}?></textarea>
+              <input type="submit" value="Create Book" name="submit" />
+            </fieldset>
+          </form>

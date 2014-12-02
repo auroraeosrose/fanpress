@@ -1,0 +1,40 @@
+<?php
+/**
+ * adminauthornew.html - create new author
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminauthornew.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>New Author</h1>
+          <ul>
+            <li>[<a href="author.php?a=0" title="List current author">List</a>]</li>
+            <li>[<strong title="Create new author">New</strong>]</li>
+            <li>[<a href="author.php?a=2" title="Edit existing author">Edit</a>]</li>
+            <li>[<a href="author.php?a=3" title="Delete author">Delete</a>]</li>
+          </ul>
+          <p>You must enter a valid username to link the author.</p>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <form action="author.php" method="post" id="new">
+            <fieldset>
+            <legend>Create Author</legend>
+              <input type="hidden" value="1" name="a" />
+              <label for="username"> User Name:</label> <input name="uname" id="username" type="text" /> <span>User name to link to the new author account.</span>
+              <label for="authorname">Author Name:</label> <input id="authorname" name="aname" type="text" /> <span>Name for the new author.</span>
+              <label for="authoremail">Email:</label> <input id="authoremail" name="email" type="text" /> <span>Email address in user@domain.tld format.</span>
+              <input type="submit" value="Create Author" name="submit" />
+            </fieldset>
+          </form>

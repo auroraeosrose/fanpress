@@ -1,0 +1,69 @@
+<?php
+/**
+ * admintypes.html - list of types and forms to edit and new
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: admintypes.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Manage Types</h1>
+          <ul>
+            <li>[<a href="library.php?a=0" title="Manage Categories">Categories</a>]</li>
+            <li>[<a href="library.php?a=1" title="Manage Ratings">Ratings</a>]</li>
+            <li>[<a href="library.php?a=2" title="Manage Styles">Styles</a>]</li>
+            <li>[<strong title="Manage Types">Types</strong>]</li>
+            <li>[<a href="library.php?a=4" title="Manage Characters">Characters</a>]</li>
+            <li>[<a href="library.php?a=5" title="Manage Genres">Genres</a>]</li>
+            <li>[<a href="library.php?a=6" title="Manage Warnnings">Warnings</a>]</li>
+          </ul>
+<?php if($total < 1):?>
+          <p class="error">
+            No Current Types
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php $num = 1; while($row = $types->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'r');?>
+            <li>
+              <span class="big"><span><?php echo $num++;?>.</span><?php echo $r_name?></span>
+              <span><a href="library.php?a=3&amp;id=<?php echo $r_id?>">Edit</a></span>
+              <span><a href="library.php?a=3&amp;did=<?php echo $r_id?>">Delete</a></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$types->close();?>
+          </ul>
+<?php endif;?>
+<?php if(isset($error)):?>
+          <p class="error" style="clear: both">
+            <?php echo $error?>
+          </p>
+<?php endif;?>
+<?php if(isset($edit)):extract($edit, EXTR_PREFIX_ALL, 'r');?>
+          <form action="library.php" method="post" style="clear: both">
+            <fieldset>
+              <legend>Edit Type</legend>
+              <input type="hidden" value="3" name="a" />
+              <input type="hidden" value="<?php echo $r_id?>" name="id" />
+              <label for="ratingname">Name:</label> <input id="ratingname" name="name" type="text" value="<?php echo $r_name?>" />
+              <label for="ratingdesc">Description:</label> <textarea id="ratingdesc" name="description" cols="30" rows="5"><?php echo $r_description?></textarea>
+              <input type="submit" value="Edit Rating" name="edit" />
+            </fieldset>
+          </form>
+<?php endif?>
+          <form action="library.php" method="post" style="clear: both">
+            <fieldset>
+              <legend>New Type</legend>
+              <input type="hidden" value="3" name="a" />
+              <label for="ratingname">Name:</label> <input id="ratingname" name="name" type="text" />
+              <label for="ratingdesc">Description:</label> <textarea id="ratingdesc" name="description" cols="30" rows="5"></textarea>
+              <input type="submit" value="Create Rating" name="new" />
+            </fieldset>
+          </form>

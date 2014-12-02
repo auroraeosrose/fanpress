@@ -1,0 +1,28 @@
+<?php
+/**
+ * viewfeatured.html - tpl for viewing a featured story
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: viewfeatured.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($featuredstory, EXTR_PREFIX_ALL, 'f')?>
+          <h1><?php echo $f_title?> by <a href="user.php?id=<?php echo $f_userid?>"><?php echo $f_username?></a></h1>
+          <p class="dark">
+            Featuring: <a href="book.php?id=<?php echo $f_bookid?>"><?php echo $f_booktitle?></a> by <?php echo group_concat($f_author, $f_authorid, 'author.php?', 'id', $nest, ' and ');?> 
+          </p>
+          <div class="story">
+            <?php echo indent(format($f_text), 12)?> 
+          </div>
+          <p class="dark small">
+            <?php echo date_format($f_date)?> 
+          </p>

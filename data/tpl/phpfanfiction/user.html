@@ -1,0 +1,67 @@
+<?php
+/**
+ * user.html - user profile tpl
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: user.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($userinfo, EXTR_PREFIX_ALL, 'u')?>
+          <h1><?php echo $u_name?></h1>
+          <ul class="dark">
+            <li>[<strong title="User profile information">Profile</strong>]</li>
+            <li>[<a href="user.php?id=<?php echo $u_id?>&amp;f=1" title="View Favorite Books">Favorite Books</a>]</li>
+            <li>[<a href="user.php?id=<?php echo $u_id?>&amp;f=2" title="View Favorite Authors">Favorite Authors</a>]</li>
+<?php if(!empty($u_author)):?>
+            <li>[<a href="author.php?id=<?php echo $u_authorid?>" title="Author account profile of user">Author: <?php echo $u_author?></a>]</li>
+<?php endif?>
+            <li>[<?php echo email($u_email, 'Send Mail')?>]</li>
+<?php if(!empty($u_website)):?>
+            <li>[<a href="<?php echo $u_website?>" title="Visit user website">Website</a>]</li>
+<?php endif?>
+          </ul>
+          <div class="story">
+<?php if(!empty($u_aim) or !empty($u_icq) or !empty($u_yim) or !empty($u_msnm)):?>
+            <p>
+               Messengers:<br/>
+<?php if(!empty($u_aim)):?>
+               AIM: <a href="aim:goim?screenname=<?php echo str_replace(' ', '+', $u_aim)?>"><?php echo $u_aim?></a><br/>
+<?php endif;if(!empty($u_msnm)):?>
+               <object classid="clsid:B69003B3-C55E-4B48-836C-BC5946FC3B28" codeType="application/x-oleobject" height="1" id="MsgrObj" width="1"></object>
+               <script>
+               function Msnm(email) {
+                  try {
+                    if(confirm('Send '+email+' an instant message?')==true)MsgrObj.InstantMessage(email);
+                  }
+                  catch(e) {
+                    alert('An error occured while attempting to launch Messenger!\nPlease verify you have Messenger installed and that you are logged onto the service.\n\nError Code: '+e.number);
+                  }
+                }
+              </script>
+              MSNM: <a href="javascript:Msnm('<?php echo $u_msnm?>')"><?php echo $u_msnm?></a><br/>
+<?php endif;if(!empty($u_icq)):?>
+              ICQ: <a href="http://www.icq.com/whitepages/wwp.php?Uin=<?php echo $u_icq?>#pager"><?php echo $u_icq?></a><br/>
+<?php endif;if(!empty($u_yim)):?>
+              YIM: <a href="ymsgr:sendIM?<?php echo $u_yim?>"><?php echo $u_yim?></a><br/>
+<?php endif?>
+            </p>
+<?php endif?>
+            <hr/>
+            <?php echo indent(format($u_biography), 12)?> 
+          </div>
+          <ul class="dark">
+            <li>[ID# <?php echo $u_id?>]</li>
+            <li>[Registered Since: <?php echo date_format($u_date)?>]</li>
+            <li>[Birthday <?php echo date_format($u_birthday, '%M/%D')?>]</li>
+            <li>[<?php if($u_gender == 1){echo 'Female';}elseif($u_gender == 2){echo 'Male';}else{echo 'Unknown Gender';}?>]</li>
+            <li>[<?php if($u_level == 3){echo 'Admin';}elseif($u_level == 2){echo 'Editor';}elseif($u_level == 1){echo 'Author';}else{echo 'User';}?>]</li>
+          </ul>

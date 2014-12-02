@@ -1,0 +1,115 @@
+/* Links */
+a:link {
+  color: #666666;
+  background-color: transparent}
+a:visited {
+  color: #333333;
+  background-color: transparent}
+/* Generic styles */
+.small {font-size: 11px}
+.error {color: #CC0000; text-align: center; font-size: 16px; font-weight: bold}
+.dark {
+  color: #333333;
+  border: none;
+  background-color: #CCCCCC}
+/* Stupid Net4 margins */
+body {
+  margin: -10px;
+  font-size: 14px;
+  font-family: Georgia, "Times New Roman", Times, serif}
+/* head ul nice */
+div#head ul img {display: none}
+div#head #logo {
+  border: none;
+  position:absolute;
+  top:0;
+  left:0}
+div#left {
+  width:200px;
+  float:left}
+/* boxes in left bar content formating */
+div#left div.wrapper div {
+  border-style: solid;
+  border-color: #333333;
+  border-width: 8px 2px 1px 2px;
+  margin-bottom: 3px;
+  width: 200px;
+}
+div#left h2 {
+  color: #333333;
+  background-color: #CCCCCC;
+  margin: 0px;
+  font-size: 20px;
+  text-align: center;
+  border: 1px solid #333333;
+}
+div#left p {
+  padding: 3px;
+  margin: 3px;
+}
+div#left span {
+  font-size: 10px;
+}
+div#left form {
+  display: none;
+}
+/* 40 pixel top bar */
+div#foot, div#head {
+  clear: both}
+div#foot p {
+  margin: 0;
+  text-align: center}
+  div#right {
+  float:right;
+  margin: 90px 0 0 220px;}
+div#right div ul {margin: 0;padding:3px;text-align: center}
+div#right div li {display: inline; list-style: none}
+div#right h1 {
+  text-align: center;
+  font-size: 22px;
+  margin: 5px;
+}
+div#right h4 {
+  text-align: center;
+  font-size: 16px;
+  margin: 5px;
+}
+div#right h3 {
+  text-indent: 35px;
+  font-size: 16px;
+  margin: 0px;
+  background-color: #CCCCCC;
+  color: #333333;
+  padding: 2px;
+  border: none;
+}
+div#right form {
+  border: 1px solid #000000;
+  background-color: #CCCCCC;
+  color: #333333;
+}
+div#right form span {
+  font-style: italic;
+  }
+div#right form#agree {display: none}
+div#right ul.list {
+  text-align: left;
+  margin: 0;
+  padding: 0px;
+  border: 1px solid #000000}
+div#right ul.list li {
+  width: 100%;
+  padding: 5px}
+div#right div.story {
+  width: 100%;
+  padding: 5px;
+  margin: 0px;
+  background-color: #FFFFFF;
+  border-right: 1px solid #666666;
+  border-left: 1px solid #666666;
+}
+div#right div.story div p {font-style: italic; text-indent: 25px}
+div#google {
+  width: 120px;
+  float: right
+  }

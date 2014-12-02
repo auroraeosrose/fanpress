@@ -1,0 +1,82 @@
+<?php
+/**
+ * editorchapterqueue.html - list of chapters in queue and ability to reject/approve
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: editorchapterqueue.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Chapter Queue</h1>
+          <ul>
+            <li>[<a href="index.php?a=0" title="View authors waiting for approval">Authors</a>]</li>
+            <li>[<a href="index.php?a=1" title="View books waiting for approval">Books</a>]</li>
+            <li>[<strong title="View chapters waiting for approval">Chapters</strong>]</li>
+            <li>[<a href="index.php?a=3" title="Manage featured stories">Featured</a>]</li>
+          </ul>
+<?php if(isset($chapter) and is_array($chapter)):extract($chapter, EXTR_PREFIX_ALL, 'b');?>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <h3>
+            <?php echo $b_chtitle?> 
+          </h3>
+          <div class="story">
+            <?php echo indent(format($b_chapter), 12)?> 
+          </div>
+          <p class="dark">
+            Book: <a href="../book.php?id=<?php echo $b_id?>"><?php echo $b_title?></a> by <?php echo group_concat($b_author, $b_authorid, 'author.php?', 'id', $nest, ' and ');?> 
+          </p>
+          <form action="index.php" method="post" id="new">
+            <fieldset>
+            <legend>Approve or Reject</legend>
+            <input type="hidden" value="2" name="a" />
+            <input type="hidden" value="<?php echo $b_chid?>" name="id" />
+            <label for="commenttext">Comment:</label> <textarea id="commenttext" class="text" name="comment" cols="30" rows="20"></textarea><br/>
+            <p>Leave your comments here or <a href="index.php?a=2" title="Return to list">Cancel</a></p>
+            <input type="submit" value="Approve Chapter" name="approve" />
+            <input type="submit" value="Reject Chapter" name="reject" />
+            </fieldset>
+          </form>
+<?php else:?>
+          <ul>
+<?php foreach($alphabet as $let):if(isset($letter) and $let == $letter):?>
+            <li><strong><?php if($let == 'NUM'):echo '&#35;';else:echo $let;endif?></strong></li>
+<?php elseif(!isset($letter) and $let == 'ALL'):?>
+            <li><strong>ALL</strong></li>
+<?php else:?>
+            <li><a href="index.php?a=2&amp;l=<?php echo $let?>"><?php if($let == 'NUM'):echo '&#35;';else:echo $let;endif?></a></li>
+<?php endif;endforeach?>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?>
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php while($row = $chapters->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'b');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span><a href="index.php?a=2&amp;id=<?php echo $b_chid?>"><?php echo $b_chtitle?></a></span>
+              <span>Words: <?php echo $b_wordcount?></span>
+              <span>Submitted: <?php echo date_format($b_date)?></span>
+              <br style="clear: both"/>
+              <span class="all dark small">Book: <a href="index.php?a=1&amp;id=<?php echo $b_id?>"><?php echo $b_title?></a> by
+              <?php echo group_concat($b_author, $b_authorid, 'author.php?', 'id', $nest, ' and ');?></span>
+              <br style="clear: both"/>
+            </li>
+<?php endwhile;$chapters->close();?>
+          </ul>
+<?php $querystring = 'index.php?a=2&amp;';if(isset($letter)){$querystring .='l='.$letter.'&amp;';}include('paging.html')?>
+<?php endif;endif?>
+
+

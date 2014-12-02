@@ -1,0 +1,47 @@
+<?php
+/**
+ * adminannouncenew.html - create new announcement
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminannouncenew.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>New Announcement</h1>
+          <ul>
+            <li>[<a href="index.php?a=0" title="List current announcements">List</a>]</li>
+            <li>[<strong title="Create new announcement">New</strong>]</li>
+            <li>[<a href="index.php?a=2" title="Edit existing announcement">Edit</a>]</li>
+            <li>[<a href="index.php?a=3" title="Delete announcement">Delete</a>]</li>
+          </ul>
+          <p>Remember that all html tags will be stripped.  Use **bold** for bold and newlines for breaks in the text body.</p>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if(isset($preview)):?>
+          <h3><?php echo $a_title?></h3>
+          <div class="border">
+            <?php echo indent(format($a_text), 12)?> 
+            <span class="dark small"><?php echo date_format($a_date)?></span>
+          </div>
+<?php endif?>
+          <form action="index.php" method="post" id="new">
+            <fieldset>
+              <legend>Create Announcement</legend>
+              <input type="hidden" value="1" name="a" />
+              <label for="announcetitle">Announcement Title:</label> <input id="announcetitle" name="title" type="text" <?php if(isset($_POST['title']) and !isset($noshow)){echo ' value="'.$_POST['title'].'"';}?> />
+              <label for="announcetext">Announcement Text:</label> <textarea id="announcetext" name="text" cols="30" rows="20"><?php if(isset($_POST['text']) and !isset($noshow)){echo strip_tags($_POST['text']);}?></textarea>
+              <input type="submit" value="Create Announcement" name="submit" <?php if(!isset($preview)):?>onclick="javascript:alert('Please Preview the Announcement');return false;"<?php endif?> />
+              <input type="submit" value="Preview Announcement" name="preview" />
+            </fieldset>
+          </form>

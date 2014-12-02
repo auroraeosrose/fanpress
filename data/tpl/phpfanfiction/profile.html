@@ -1,0 +1,72 @@
+<?php
+/**
+ * profile.html - user profile edit form
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: profile.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($userinfo, EXTR_PREFIX_ALL, 'u'); $u_birthday = explode(' ', $u_birthday); $u_birthday = explode('-', $u_birthday[0]);?>
+          <h1>Edit Account Profile</h1>
+          <ul>
+            <li title="Edit user profile information">[<strong>Profile</strong>]</li>
+            <li>[<a href="index.php?a=1" title="Manage author and book favorites">Favorites</a>]</li>
+<?php if(isset($author) and $author != FALSE):?>
+            <li>[<a href="../author/index.php" title="Your author account">Author Account</a>]</li>
+<?php else:?>
+            <li>[<a href="index.php?a=2" title="Request Account Upgrade">Account Upgrade</a>]</li>
+<?php endif?>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?>
+          </p>
+<?php endif?>
+          <form action="index.php" method="post">
+            <fieldset>
+            <legend>Basic Information</legend>
+              <input type="hidden" name="form" value="1" />
+              <span>ID: #<?php echo $u_id?></span> <span>Member since <?php echo date_format($u_date)?></span><span>Basic User Information</span>
+              <label for="basicname">Name:</label> <input id="basicname" name="name" type="text" value="<?php echo $u_name?>"/> <span>User names must be unique, and are case sensitive.  You will use this each time you log in, so choose something you can remember.</span>
+              <label for="basicpassword">Password:</label> <input id="basicpassword" name="password1" type="password"  /> <span>Passwords must be at least 6 letters long.  Acronyms work well.</span>
+              <label for="basicconfirm">Confirm:</label> <input id="basicconfirm" name="password2" type="password"  /> <span>Please retype your new password.</span>
+              <label for="basicbirthdate">Birthdate:</label> <div id="basicbirthdate"><input name="month" type="text" maxlength="2" value="<?php echo $u_birthday[1]?>" />/<input name="day" type="text" maxlength="2" value="<?php echo $u_birthday[2]?>" />/<input name="year" type="text" maxlength="4" value="<?php echo $u_birthday[0]?>" /></div> <span>Type your birthdate in MM/DD/YYYY format.  This means January 5th is 01/05/2004.</span>
+              <input type="submit" value="Change Basic Information" name="submit" />
+            </fieldset>
+          </form>
+          <form action="index.php" method="post">
+            <fieldset>
+            <legend>Change Email Address</legend>
+              <input type="hidden" name="form" value="2" />
+              <label for="currentemail">Current Email:</label> <span id="currentemail"><?php echo $u_email?></span><span>Your current email address</span>
+              <label for="changeemail">New Email:</label> <input id="changeemail" name="email" type="text" /> <span>Make sure this mailbox stays empty enough to receive mail, bounces may result in account deactivation.  You must reconfirm your account if you change your email address.</span>
+              <input type="submit" value="Change Email Address" name="submit" />
+            </fieldset>
+          </form>
+          <form action="index.php" method="post">
+            <fieldset>
+            <legend>Change Profile Information</legend>
+              <input type="hidden" name="form" value="3" />
+              <label for="profilehomepage">Homepage:</label> <input id="profilehomepage" name="website" type="text" value="<?php echo $u_website?>" /> <span>A link to a personal website, blog, or homepage.</span>
+              <label for="profileaim">AIM:</label> <input id="profileaim" name="aim" type="text" value="<?php echo $u_aim?>"/> <span>AOL instant messenger username.</span>
+              <label for="profileicq">ICQ:</label> <input id="profileicq" name="icq" type="text" value="<?php echo $u_icq?>"/> <span>ICQ number - usually a 10 digit number.</span>
+              <label for="profilemsn">MSN:</label> <input id="profilemsn" name="msn" type="text" value="<?php echo $u_msn?>"/> <span>MSN instant messenger name, usually an email address @hotmail.com or @msn.com.</span>
+              <label for="profileyim">YIM:</label> <input id="profileyim" name="yim" type="text" value="<?php echo $u_yim?>"/> <span>Yahoo instant messenger name.</span>
+              <label for="profilegender">Gender:</label> <div id="profilegender">
+              <label for="gendernone">Unspecified</label><input id="gendernone" type="radio" name="gender" value="0" <?php if($u_gender == 0):?>checked="checked"<?php endif?> />
+              <label for="genderfemale">Female</label><input id="genderfemale" type="radio" name="gender" value="1" <?php if($u_gender == 1):?>checked="checked"<?php endif?> />
+              <label for="gendermale">Male</label><input id="gendermale" type="radio" name="gender" value="2" <?php if($u_gender == 2):?>checked="checked"<?php endif?> /></div> <span>Your gender.</span>
+              <label for="profilebio">Biography:</label> <textarea id="profilebio" name="biography" rows="20" cols="20"><?php echo $u_biography?></textarea> <span>Write whatever you'd like to display in your profile.  No html allowed.</span>
+            <input type="submit" value="Change Profile Information" name="submit" />
+            </fieldset>
+          </form>
+

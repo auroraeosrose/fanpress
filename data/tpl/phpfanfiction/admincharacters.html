@@ -1,0 +1,88 @@
+<?php
+/**
+ * admincharacters.html - new/edit/list characters admin tpl
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: admincharacters.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Manage Characters</h1>
+          <ul>
+            <li>[<a href="library.php?a=0" title="Manage Categories">Categories</a>]</li>
+            <li>[<a href="library.php?a=1" title="Manage Ratings">Ratings</a>]</li>
+            <li>[<a href="library.php?a=2" title="Manage Styles">Styles</a>]</li>
+            <li>[<a href="library.php?a=3" title="Manage Types">Types</a>]</li>
+            <li>[<strong title="Manage Characters">Characters</strong>]</li>
+            <li>[<a href="library.php?a=5" title="Manage Genres">Genres</a>]</li>
+            <li>[<a href="library.php?a=6" title="Manage Warnnings">Warnings</a>]</li>
+          </ul>
+<?php if($total < 1):?>
+          <p class="error">
+            No Current Characters
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php $num = 1; while($row = $characters->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c');?>
+            <li>
+              <span class="big"><span><?php echo $num++;?>.</span><?php echo $c_name?>
+<?php if($c_catid == 0):?>
+              - ALL</span>
+<?php else:?>
+              - <a href="library.php?a=0&amp;id=<?php echo $c_catid?>"><?php echo $c_category?></a></span>
+<?php endif;?>
+              <span><a href="library.php?a=4&amp;id=<?php echo $c_id?>">Edit</a></span>
+              <span><a href="library.php?a=4&amp;did=<?php echo $c_id?>">Delete</a></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$characters->close();?>
+          </ul>
+<?php endif;?>
+<?php if(isset($error)):?>
+          <p class="error" style="clear: both">
+            <?php echo $error?>
+          </p>
+<?php endif;?>
+<?php if(isset($edit)):extract($edit, EXTR_PREFIX_ALL, 'd');?>
+          <form action="library.php" method="post" style="clear: both">
+            <fieldset>
+              <legend>Edit Character</legend>
+              <input type="hidden" value="4" name="a" />
+              <input type="hidden" value="<?php echo $d_id?>" name="id" />
+              <label for="charactername">Name:</label> <input id="charactername" name="name" type="text" value="<?php echo $d_name?>"/>
+              <label for="characterdesc">Description:</label> <textarea id="characterdesc" name="description" cols="30" rows="5"><?php echo $d_description?></textarea>
+              <label for="categoryname">Category:</label>
+              <select name="category" id="categoryname">
+                <option value="0"<?php if($d_catid == 0){echo ' selected="selected"';}?>>All</option>
+<?php $categories->data_seek(0);while($row = $categories->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c');?>
+                <option value="<?php echo $c_id?>"<?php if($d_catid == $c_id){echo ' selected="selected"';}?>><?php echo $c_name?></option>
+<?php endwhile;$categories->data_seek(0);?>
+              </select>
+              <input type="submit" value="Edit Character" name="edit" />
+            </fieldset>
+          </form>
+<?php endif?>
+          <form action="library.php" method="post" style="clear: both">
+            <fieldset>
+              <legend>New Character</legend>
+              <input type="hidden" value="4" name="a" />
+              <label for="charactername">Name:</label> <input id="charactername" name="name" type="text" />
+              <label for="characterdesc">Description:</label> <textarea id="characterdesc" name="description" cols="30" rows="5"></textarea>
+              <label for="categoryname">Category:</label>
+              <select name="category" id="categoryname">
+                <option value="0">All</option>
+<?php while($row = $categories->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c');?>
+                <option value="<?php echo $c_id?>"><?php echo $c_name?></option>
+<?php endwhile;$categories->close();?>
+              </select>
+              <input type="submit" value="Create Character" name="new" />
+            </fieldset>
+          </form>

@@ -1,0 +1,45 @@
+/* sets scrollbars, tricks IE */
+html {
+  height:100%;
+  max-height:100%;
+  overflow:hidden;
+  padding:0;
+  margin:0;
+  border:0;
+  scrollbar-track-color: #CCCCCC;
+  scrollbar-face-color: #999999;
+  scrollbar-arrow-color: #FFFFFF;
+  scrollbar-shadow-color: #000000;
+  scrollbar-highlight-color: #CCCCCC}
+:link{-ie7-link:link}
+:visited{-ie7-link:visited}
+div#left, div#right {
+  height:100%;
+  top:0;
+  bottom:0;
+  border-top:30px dotted #FFFFFF;
+  border-bottom:50px solid #FFFFFF}
+div#head, div#foot{
+  position:absolute;
+  width: 100%}
+div#right form fieldset span {
+  width: 29%;
+}
+div#head a#logo { position: absolute; top: 0; left: 15px;
+height: 75px;
+width: 150px;
+cursor: hand;
+}
+div#head a#logo:hover {background-color: transparent}
+div#head a#logo img {visibility: hidden}
+form input[type="checkbox"] {border: none}
+div#right ul.list li br {line-height: 1px;}
+div#right ul.list li span.all {
+  width: 100%}
+div#right ol li span.big {
+  width:50%;}
+div#right ol li{ list-style: none;}
+div#right form fieldset div.row input:first-child{
+  margin-left: 3%}
+div#right form fieldset div.row input{
+  margin-left: 3%}

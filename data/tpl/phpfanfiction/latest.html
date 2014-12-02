@@ -1,0 +1,53 @@
+<?php
+/**
+ * latest.html - latest browse page tpl
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: latest.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Browse Latest</h1>
+          <ul>
+            <li title="Browse latest stories">[<strong>Latest</strong>]</li>
+            <li>[<a href="browse.php?a=1" title="Browse by categories">Categories</a>]</li>
+            <li>[<a href="browse.php?a=2" title="Browse by title">Titles</a>]</li>
+            <li>[<a href="browse.php?a=3" title="Browse by author">Authors</a>]</li>
+          </ul>
+          <ul>
+            <li>[Show by: <a href="browse.php?a=0&amp;t=0&amp;p=1&amp;s=<?php echo $size?>">Last Update</a>]</li>
+            <li>[Show by: <a href="browse.php?a=0&amp;t=1&amp;p=1&amp;s=<?php echo $size?>">Publish Date</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?>
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php while($row = $books->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'b');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span>&nbsp;<a href="book.php?id=<?php echo $b_bookid?>"><?php echo $b_title?></a> by <?php echo group_concat($b_author, $b_authorid, 'author.php?', 'id', $nest, ' and ');?></span>
+              <span>Published: <?php echo date_format($b_publish)?></span><span>Updated: <?php echo date_format($b_update)?></span>
+              <br style="clear: both" />
+              <span class="big small"><a href="browse.php?a=0&amp;cid=<?php echo $b_catid?>"><?php echo $b_catname?></a> : <a href="browse.php?a=0&amp;tid=<?php echo $b_typeid?>"><?php echo $b_type?></a> :
+              <a href="browse.php?a=0&amp;sid=<?php echo $b_styleid?>"><?php echo $b_style?></a> : <?php echo group_concat($b_genre, $b_genreid, 'browse.php?a=0&amp;', 'gid', $nest, '/');?> :
+              <a href="browse.php?a=0&amp;rid=<?php echo $b_ratingid?>"><?php echo $b_rating?></a> : <?php echo group_concat($b_warning, $b_warningid, 'browse.php?a=0&amp;', 'wid', $nest, '/');?> :
+              <?php echo group_concat($b_character, $b_characterid, 'browse.php?a=0&amp;', 'chid', $nest, ', ');?></span>
+              <span>Chapters: <?php echo $b_chapters?> Words: <?php echo $b_wordcount?></span><span><?php if($b_completed == 1){echo 'Completed';}else{echo 'Unfinished';}?></span>
+              <br style="clear: both" />
+              <span class="big"><?php echo $b_summary?></span>
+              <span><a href="comment.php?id=<?php echo $b_bookid?>">Comments: <?php echo $b_comments?></a></span><?php echo rank_images($b_ranking, $nest)?> 
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$books->close();?>
+          </ul>
+<?php $querystring = 'browse.php?a=0&amp;';if(isset($letter)){$querystring .='l='.$letter.'&amp;';}include('paging.html')?>
+<?php endif?>

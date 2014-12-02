@@ -1,0 +1,87 @@
+<?php
+/**
+ * adminfeatureddelete.html - list of featured to delete
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminfeatureddelete.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Delete Featured</h1>
+          <ul>
+            <li>[<a href="featured.php?a=0" title="List current featured">List</a>]</li>
+            <li>[<a href="featured.php?a=1" title="Create new featured">New</a>]</li>
+            <li>[<a href="featured.php?a=2" title="Edit existing featured">Edit</a>]</li>
+            <li>[<strong title="Delete featured">Delete</strong>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if(!isset($total) or $total == 0):?>
+          <form action="featured.php" method="post">
+            <fieldset>
+              <legend>Find Featured</legend>
+              <input type="hidden" value="3" name="a" />
+              <label for="searchfind">Search For:</label> <input id="searchfind" name="string" type="text" />
+              <span>
+                Boolean Mode can use + to require a word, - to exlude a word, &lt; and &gt; to change word relevance value, () to group
+                sub-expressions, ~ to mark noise words (a word you might not want to exclude altogether, but it shouldn't be as important),
+                * as a wildcard so ba* will match ball and bat, and double quotes around literal strings.
+              </span>
+              <label for="searchtitle">Search Title:</label> <div><input id="searchtitle" name="title" type="checkbox" /></div>
+              <label for="searchsummary">Search Summary:</label> <div><input id="searchsummary" name="summary" type="checkbox" /></div>
+              <label for="searchtext">Search Text:</label> <div><input id="searchtext" name="text" type="checkbox" /></div>
+              <label for="searchbool">Use Boolean Mode:</label> <div><input id="searchbool" name="bool" type="checkbox" /></div>
+              <label for="searchdate">Search by Date:</label> <div><input name="month" type="text" maxlength="2"/>/<input name="day" type="text" maxlength="2" />/<input name="year" type="text" maxlength="4" /></div> <span>Search by a month, day, or year, or any combination.  For example, to find all the posts from January of 2000, enter 01 in the first box, leave the second blank, and enter 2000 in the last box</span>
+              <input type="submit" value="Find Featured Story" name="search" />
+            </fieldset>
+          </form>
+<?php else:?>
+          <script language="javascript" type="text/javascript">
+          function selectAll(obj) {
+            var checkBoxes = document.getElementsByTagName('input');
+            for (i = 0; i < checkBoxes.length; i++) {
+              if (obj.checked == true) {
+                checkBoxes[i].checked = true;
+              } else {
+                checkBoxes[i].checked = false;
+              }
+            }
+          }
+          </script>
+          <form action="index.php" method="post">
+            <input type="hidden" value="3" name="a" />
+            <ul class="list">
+<?php while($row = $results->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'f');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span><a href="featured.php?a=2&amp;id=<?php echo $f_id?>"><?php echo $f_title?></a> by <a href="user.php?a=2&amp;id=<?php echo $f_uid?>"><?php echo $f_uname?></a>
+              about <a href="book.php?a=2&amp;id=<?php echo $f_bid?>"><?php echo $f_btitle?></a></span>
+              <span><input type="checkbox" name="delete[<?php echo $f_id?>]" value="1"/></span>
+              <span>Posted: <?php echo date_format($f_date)?></span>
+              <br style="clear: both"/>
+            </li>
+<?php endwhile;$results->close();?>
+              <li>
+                <span class="big"><input type="submit" value="Delete Checked" name="submit" /></span>
+                <span><input type="checkbox" name="checkall" onclick="selectAll(this);"/></span>
+                <span>&nbsp;</span>
+                <br style="clear: both"/>
+              </li>
+            </ul>
+          </form>
+<?php $querystring = 'index.php?a=3&amp;f=1&amp;';include('paging.html')?>
+<?php endif;if(isset($total) and $total == 0):?>
+          <p class="error">
+            No Matches Found
+          </p>
+<?php endif?>

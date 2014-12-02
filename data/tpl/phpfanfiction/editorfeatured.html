@@ -1,0 +1,72 @@
+<?php
+/**
+ * editorfeatured.html - used for an editor to manage featured stories
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: editorfeatured.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Manage Featured Stories</h1>
+          <ul>
+            <li>[<a href="index.php?a=0" title="View authors waiting for approval">Authors</a>]</li>
+            <li>[<a href="index.php?a=1" title="View books waiting for approval">Books</a>]</li>
+            <li>[<a href="index.php?a=2" title="View chapters waiting for approval">Chapters</a>]</li>
+            <li>[<strong title="Manage featured stories">Featured</strong>]</li>
+          </ul>
+<?php if($total < 1):?>
+          <p class="error">
+            No Current Featured Stories
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php $num = 1; while($row = $featurelist->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'f');?>
+            <li>
+              <span class="big"><span><?php echo $num++;?>.</span>&nbsp;<a href="featured.php?id=<?php echo $f_id?>"><?php echo $f_title?></a> posted on <?php echo date_format($f_date)?></span>
+              <span><a href="index.php?a=3&amp;id=<?php echo $f_id?>">Edit</a></span>
+              <span><a href="index.php?a=3&amp;did=<?php echo $f_id?>">Delete</a></span>
+              <br style="clear: both" />
+              <span class="big"><a href="book.php?id=<?php echo $f_bookid?>"><?php echo $f_booktitle?></a> by <?php echo group_concat($f_author, $f_authorid, 'author.php?', 'id', $nest, ' and ');?></span>
+              <span>Published: <?php echo date_format($f_publish)?></span><span>Updated: <?php echo date_format($f_update)?></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$featurelist->close();?>
+          </ul>
+<?php endif;?>
+<?php if(isset($error)):?>
+          <p class="error" style="clear: both">
+            <?php echo $error?> 
+          </p>
+<?php endif;?>
+<?php if(isset($edit)):extract($edit, EXTR_PREFIX_ALL, 'r');?>
+          <form action="index.php" method="post">
+            <fieldset>
+              <legend>Edit Featured Story</legend>
+              <input type="hidden" value="3" name="a" />
+              <input type="hidden" value="<?php echo $r_id?>" name="id" />
+              <label for="featuretitle">Feature Title:</label> <input id="featuretitle" name="title" type="text" value="<?php echo $r_title?>"/>
+              <label for="featuresummary">Summary:</label> <textarea id="featuresummary" name="summary" cols="30" rows="5"><?php echo $r_summary?></textarea>
+              <label for="featuretext">Text:</label> <textarea class="text" id="featuretext" name="text" cols="30" rows="20"><?php echo $r_text?></textarea>
+              <input type="submit" value="Edit Feature" name="edit" />
+            </fieldset>
+          </form>
+<?php endif?>
+          <form action="index.php" method="post">
+            <fieldset>
+              <legend>New Featured Story</legend>
+              <input type="hidden" value="3" name="a" />
+              <label for="booktitle">Book Title:</label> <input id="booktitle" name="btitle" type="text" />
+              <label for="featuretitle">Feature Title:</label> <input id="featuretitle" name="title" type="text" />
+              <label for="featuresummary">Summary:</label> <textarea id="featuresummary" name="summary" cols="30" rows="5"></textarea>
+              <label for="featuretext">Text:</label> <textarea class="text" id="featuretext" name="text" cols="30" rows="20"></textarea>
+              <input type="submit" value="Create Feature" name="new" />
+            </fieldset>
+          </form>

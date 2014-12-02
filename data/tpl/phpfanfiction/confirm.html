@@ -1,0 +1,46 @@
+<?php
+/**
+ * confirm.html - form to confirm user account
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: confirm.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Confirm your Account</h1>
+          <ul>
+            <li>[<a href="login.php?a=0" title="Login to your account">Login</a>]</li>
+            <li>[<a href="login.php?a=1" title="Register for an account">Register</a>]</li>
+            <li>[<a href="login.php?a=2" title="Retrieve lost password and/or username">Lost Password</a>]</li>
+            <li title="Confirm new account or email change.">[<strong>Confirm</strong>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <form action="login.php" method="post">
+            <fieldset>
+              <legend>Confirm</legend>
+              <input type="hidden" name="a" value="3" />
+              <label for="confirmname">Name:</label> <input id="confirmname" name="name" type="text" /> <span>The username you selected, not your author penname.</span>
+              <label for="confirmpassword">Password:</label> <input id="confirmpassword" name="password" type="password"  /> <span>The password you selected.</span>
+              <label for="confirmcode">Confirmation Code:</label> <input id="confirmcode" name="code" type="text"  /> <span>The number sent to you in the email message after you registered.</span>
+              <input type="submit" value="Confirm" name="submit" />
+            </fieldset>
+          </form>
+          <p>
+            Use the form above to confirm your user account.  You must have <a href="login.php?a=1">registered</a>
+            for an account and should have received an email with your name, password, and confirmation code.  Or
+            you may have changed your user account email address and received an email message with a confirmation code.
+            If you cannot access the email account you registered with or didn't receive an email within 48 hours of
+            registering, please contact the administrator.
+          </p>

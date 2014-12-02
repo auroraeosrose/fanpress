@@ -1,0 +1,113 @@
+<?php
+/**
+ * sidebar.html - sidebar tpl with latest and featured stuff plus login switch
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: sidebar.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php if($totals != FALSE):?>
+          <div>
+            <p>
+              There are <?php echo $totals['authors']?> publishing authors and <?php echo $totals['books']?> books currently in the library.
+            </p>
+          </div>
+<?php endif;?>
+<?php if(!is_null($featured)):extract($featured, EXTR_PREFIX_ALL, 's');unset($featured)?>
+          <div>
+            <h2>Featured Book</h2>
+            <p>
+              <a href="<?php echo $nest?>book.php?id=<?php echo $s_bookid?>"><?php echo $s_booktitle?></a> by <?php echo group_concat($s_author, $s_authorid, 'author.php?', 'id', $nest, ' and ')."\n"?>
+            </p>
+            <p class="small">
+              Published: <?php echo date_format($s_publish)?> - Updated: <?php echo date_format($s_update)?> - Chapters: <?php echo $s_chapters?> - <?php if($s_completed == 1){echo 'Completed'."\n";}else{echo 'Unfinished'."\n";}?>
+            </p>
+            <p>
+              <a href="<?php echo $nest?>featured.php?id=<?php echo $s_id?>"><?php echo $s_title?></a> by <a href="<?php echo $nest?>user.php?id=<?php echo $s_userid?>"><?php echo $s_username?></a>
+            </p>
+            <p>
+              <?php echo wrap(indent($s_summary, 14, ' '))."\n"?>
+            </p>
+            <p class="small"><?php echo date_format($s_date)?></p>
+          </div>
+<?php endif?>
+<?php if($user == FALSE):?>
+          <div>
+            <form action="<?php echo $nest?>user/login.php" method="post">
+              <fieldset>
+                <legend>Login</legend>
+                <label for="sidename">Name:</label><input name="name" id="sidename" type="text" />
+                <label for="sidepassword">Password:</label><input name="password" id="sidepassword" type="password" />
+                <input type="submit" value="Login" name="submit" />
+              </fieldset>
+            </form>
+          </div>
+<?php else:?>
+          <div>
+            <p>
+              You are logged in as <?php echo $user."\n"?>
+            </p>
+          </div>
+<?php endif;?>
+<?php if(isset($latest_update) and !is_null($latest_update)):extract($latest_update, EXTR_PREFIX_ALL, 's');unset($latest_update);?>
+          <div>
+            <h2>Last Updated</h2>
+            <p>
+              <a href="<?php echo $nest?>book.php?id=<?php echo $s_bookid?>"><?php echo $s_title?></a> by <?php echo group_concat($s_author, $s_authorid, 'author.php?', 'id', $nest, ' and ');?> 
+            </p>
+            <p>
+              <?php echo wrap(indent($s_summary, 14, ' '))."\n"?>
+            </p>
+            <p class="small">
+              <a href="<?php echo $nest?>browse.php?a=0&amp;cid=<?php echo $s_catid?>"><?php echo $s_catname?></a> :  <a href="<?php echo $nest?>browse.php?a=0&amp;tid=<?php echo $s_typeid?>"><?php echo $s_type?></a> :<?php echo group_concat($s_genre, $s_genreid, 'browse.php?a=0&amp;', 'gid', $nest, '/ ');?> :
+              <a href="<?php echo $nest?>browse.php?a=0&amp;rid=<?php echo $s_ratingid?>"><?php echo $s_rating?></a> : <a href="<?php echo $nest?>browse.php?a=0&amp;sid=<?php echo $s_styleid?>"><?php echo $s_style?></a> : <?php echo group_concat($s_warning, $s_warningid, 'browse.php?a=0&amp;', 'wid', $nest, '/ ');?> :
+              <?php echo group_concat($s_character, $s_characterid, 'browse.php?a=0&amp;', 'chid', $nest, ', ')."\n";?>
+            </p>
+            <p class="small">Published: <?php echo date_format($s_publish)?> - Updated: <?php echo date_format($s_update)?> - Chapters: <?php echo $s_chapters?> - <a href="<?php echo $nest?>comment.php?id=<?php echo $s_bookid?>">Comments: <?php echo $s_comments?></a>- <?php if($s_completed == 1){echo 'Completed';}else{echo 'Unfinished';}?> - <?php echo rank_images($s_ranking, $nest)?></p>
+          </div>
+<?php endif;?>
+<?php if(isset($latest_publish) and !is_null($latest_publish)):extract($latest_publish, EXTR_PREFIX_ALL, 's');unset($latest_publish);?>
+          <div>
+            <h2>Last Published</h2>
+            <p>
+              <a href="<?php echo $nest?>book.php?id=<?php echo $s_bookid?>"><?php echo $s_title?></a> by <?php echo group_concat($s_author, $s_authorid, 'author.php?', 'id', $nest, ' and ');?> 
+            </p>
+            <p>
+              <?php echo wrap(indent($s_summary, 14, ' '))."\n"?>
+            </p>
+            <p class="small">
+              <a href="<?php echo $nest?>browse.php?a=0&amp;cid=<?php echo $s_catid?>"><?php echo $s_catname?></a> : <a href="<?php echo $nest?>browse.php?a=0&amp;tid=<?php echo $s_typeid?>"><?php echo $s_type?></a> : <?php echo group_concat($s_genre, $s_genreid, 'browse.php?a=0&amp;', 'gid', $nest, '/ ');?> :
+              <a href="<?php echo $nest?>browse.php?a=0&amp;rid=<?php echo $s_ratingid?>"><?php echo $s_rating?></a> :  <a href="<?php echo $nest?>browse.php?a=0&amp;sid=<?php echo $s_styleid?>"><?php echo $s_style?></a> : <?php echo group_concat($s_warning, $s_warningid, 'browse.php?a=0&amp;', 'wid', $nest, '/ ');?> :
+              <?php echo group_concat($s_character, $s_characterid, 'browse.php?a=0&amp;', 'chid', $nest, ', ')."\n";?>
+            </p>
+            <p class="small">Published: <?php echo date_format($s_publish)?> - Updated: <?php echo date_format($s_update)?> - Chapters: <?php echo $s_chapters?> - <a href="<?php echo $nest?>comment.php?id=<?php echo $s_bookid?>">Comments: <?php echo $s_comments?></a> - <?php if($s_completed == 1){echo 'Completed';}else{echo 'Unfinished';}?> - <?php echo rank_images($s_ranking, $nest)?></p>
+          </div>
+<?php endif;?>
+<?php if(isset($latest_author) and !is_null($latest_author)):extract($latest_author, EXTR_PREFIX_ALL, 's');unset($latest_author);?>
+          <div>
+            <h2>Last Author</h2>
+            <p>
+              <a href="<?php echo $nest?>author.php?id=<?php echo $s_authorid?>"><?php echo $s_author?></a>
+            </p>
+            <p class="small">Registered Since: <?php echo date_format($s_date, '%M/%D/%Y, %h:%m %p')?></p>
+          </div>
+<?php endif;?>
+<?php if(isset($latest_user) and !is_null($latest_user)):extract($latest_user, EXTR_PREFIX_ALL, 's');unset($latest_user);?>
+          <div>
+            <h2>Last User</h2>
+            <p>
+              <a href="<?php echo $nest?>user.php?id=<?php echo $s_userid?>"><?php echo $s_user?></a>
+            </p>
+            <p class="small">Registered Since: <?php echo date_format($s_date, '%M/%D/%Y, %h:%m %p')?></p>
+          </div>
+<?php endif;?>
+

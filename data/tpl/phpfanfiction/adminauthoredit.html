@@ -1,0 +1,82 @@
+<?php
+/**
+ * adminauthoredit.html - search for list, edit authors
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminauthoredit.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Edit Author</h1>
+          <ul>
+            <li>[<a href="author.php?a=0" title="List current authors">List</a>]</li>
+            <li>[<a href="author.php?a=1" title="Create new authors">New</a>]</li>
+            <li>[<strong title="Edit existing authors">Edit</strong>]</li>
+            <li>[<a href="author.php?a=3" title="Delete authors">Delete</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif;if(isset($result) and !is_null($result)):extract($result, EXTR_PREFIX_ALL, 'a');?>
+          <p>Remember that all html tags will be stripped.  Use **bold** for bold and newlines for breaks in the biography text.</p>
+          <form action="author.php" method="post" id="new">
+            <fieldset>
+              <legend>Edit Author</legend>
+              <input type="hidden" value="2" name="a" />
+              <label for="authorid">Author Id:</label><span id="authorid">#<?php echo $a_id?><input type="hidden" value="<?php echo $a_id?>" name="id" /></span><span>User: <a href="user.php?a=2&amp;fid=<?php echo $a_uid?>"><?php echo $a_uname?></a></span>
+              <label for="authorreg">Author Date:</label><span id="authorreg"><?php echo date_format($a_date)?></span><span> <?php echo $a_count?> Valid Books</span>
+              <label for="authorname">Author Name:</label> <input id="authorname" name="name" type="text" value="<?php echo $a_name?>" />
+              <label for="authoremail">Author Email:</label> <input id="authoremail" name="email" type="text" value="<?php echo $a_email?>" />
+              <label for="authorstory">Author Story:</label> <textarea class="text" cols="30" rows="30" id="authorstory" name="story"><?php echo $a_file?></textarea>
+              <label for="authortext">Author Text:</label> <textarea class="text" id="authortext" name="text" class="text" cols="30" rows="20"><?php echo $a_text?></textarea>
+              <hr />
+              <label for="authororder">Alphabet Letter:</label> <input maxlength="1" id="authororder" name="order" type="text" value="<?php echo $a_order?>" />
+              <label for="authorvalid">Is Valid:</label> <div><input id="authorvalid" name="valid" type="checkbox" value="1" <?php if($a_valid == 1):?>checked="checked"<?php endif?>/></div>
+              <input type="submit" value="Change Author" name="submit" />
+            </fieldset>
+          </form>
+<?php elseif(!isset($total) or $total == 0):?>
+          <form action="author.php" method="post">
+            <fieldset>
+              <legend>Find Author</legend>
+              <input type="hidden" value="2" name="a" />
+              <label for="searchfind">Search For:</label> <input id="searchfind" name="string" type="text" />
+              <span>
+                Boolean Mode can use + to require a word, - to exlude a word, &lt; and &gt; to change word relevance value, () to group
+                sub-expressions, ~ to mark noise words (a word you might not want to exclude altogether, but it shouldn't be as important),
+                * as a wildcard so ba* will match ball and bat, and double quotes around literal strings.
+              </span>
+              <label for="searchname">Search Name:</label> <div><input id="searchname" name="name" type="checkbox" /></div>
+              <label for="searchemail">Search Email:</label> <div><input id="searchemail" name="email" type="checkbox" /></div>
+              <label for="searchbool">Use Boolean Mode:</label> <div><input id="searchbool" name="bool" type="checkbox" /></div>
+              <label for="searchdate">Search by Date:</label> <div id="searchdate"><input name="month" type="text" maxlength="2"/>/<input name="day" type="text" maxlength="2" />/<input name="year" type="text" maxlength="4" /></div> <span>Search by a month, day, or year, or any combination.  For example, to find all the users from January of 2000, enter 01 in the first box, leave the second blank, and enter 2000 in the last box</span>
+              <input type="submit" value="Find Author" name="search" />
+            </fieldset>
+          </form>
+<?php else:?>
+          <ul class="list">
+<?php while($row = $authors->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'a');?>
+            <li>
+             <span class="big"> <span><?php echo $offset++;?>.</span> <a href="author.php?a=2&amp;id=<?php echo $a_id?>"><?php echo $a_name?></a> - <a href="user.php?a=2&amp;id=<?php echo $a_uid?>"><?php echo $a_uname?></a></span>
+              <span>Active: <?php if($a_valid == 1){echo 'Yes';}else{echo 'No';}?>
+              - Level: <?php if($a_level == 3){echo 'Admin';}elseif($a_level == 2){echo 'Editor';}elseif($a_level == 1){echo 'Author';}else{echo 'User';}?></span>
+              <span>Since: <?php echo date_format($a_date)?></span>
+              <br style="clear: both"/>
+            </li>
+<?php endwhile;$authors->close();?>
+          </ul>
+<?php $querystring = 'author.php?a=2&amp;f=1';include('paging.html')?>
+<?php endif;if(isset($total) and $total == 0):?>
+          <p class="error">
+            No Matches Found
+          </p>
+<?php endif?>

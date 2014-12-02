@@ -1,0 +1,42 @@
+<?php
+/**
+ * adminannouncelist.html - list current announcements
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: adminannouncelist.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>List Announcements</h1>
+          <ul>
+            <li>[<strong title="List current announcements">List</strong>]</li>
+            <li>[<a href="index.php?a=1" title="Create new announcement">New</a>]</li>
+            <li>[<a href="index.php?a=2" title="Edit existing announcement">Edit</a>]</li>
+            <li>[<a href="index.php?a=3" title="Delete announcement">Delete</a>]</li>
+          </ul>
+<?php if($total == 0):?>
+          <p class="error">
+            There are no Announcements
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php while($row = $announcements->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'a');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span><a href="index.php?a=2&amp;id=<?php echo $a_id?>"><?php echo $a_title?></a></span>
+              <span><a href="index.php?a=0&amp;did=<?php echo $a_id?>">Delete</a></span>
+              <span>Posted: <?php echo date_format($a_date)?></span>
+              <br style="clear: both"/>
+            </li>
+<?php endwhile;$announcements->close();?>
+          </ul>
+<?php $querystring = 'index.php?a=0&amp;';include('paging.html')?>
+<?php endif?>
+

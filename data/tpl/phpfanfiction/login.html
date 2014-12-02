@@ -1,0 +1,43 @@
+<?php
+/**
+ * login.html - login form
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: login.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Login to your Account</h1>
+          <ul>
+            <li title="Login to your account">[<strong>Login</strong>]</li>
+            <li>[<a href="login.php?a=1" title="Register for an account">Register</a>]</li>
+            <li>[<a href="login.php?a=2" title="Retrieve lost password and/or username">Lost Password</a>]</li>
+            <li>[<a href="login.php?a=3" title="Confirm new account or email change.">Confirm</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+          <form action="login.php" method="post">
+            <fieldset>
+              <legend>Login</legend>
+              <label for="loginname">Name:</label> <input id="loginname" name="name" type="text" /> <span>The username you selected, not your author penname.</span>
+              <label for="loginpassword">Password:</label> <input id="loginpassword" name="password" type="password"  /> <span>The password you selected.</span>
+              <input type="submit" value="Login" name="submit" />
+            </fieldset>
+          </form>
+          <p>
+            Use the form above to log into your user account.  You must have <a href="login.php?a=1">registered</a>
+            for an account and you also must have <a href="login.php?a=3">confirmed</a> the account using the email
+            message sent to you.  If you've <a href="login.php?a=2">lost</a> your password, a new one can be generated
+            and mailed to you.  If you cannot access the email account you registered with, please contact the administrator.
+          </p>

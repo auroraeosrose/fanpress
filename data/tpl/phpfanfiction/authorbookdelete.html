@@ -1,0 +1,49 @@
+<?php
+/**
+ * authorbookdelete.html - list of books with delete checkbox
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: authorbookdelete.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Delete Book</h1>
+          <ul>
+            <li>[<a href="book.php?a=0" title="Create New Book">New</a>]</li>
+            <li>[<a href="book.php?a=1" title="Edit Current Books">Edit</a>]</li>
+            <li>[<strong title="Delete Current Book">Delete</strong>]</li>
+            <li>[<a href="book.php?a=3" title="View Book Statistics">Statistics</a>]</li>
+          </ul>
+<?php if(isset($error)):?>
+          <p class="error">
+            <?php echo $error?> 
+          </p>
+<?php endif?>
+<?php if($books->num_rows < 1):?>
+          <p class="error">
+            No Current Books
+          </p>
+<?php else:?>
+          <p class="dark">
+            WARNING: Deleting a book is non-reversible.  All information about the book, all chapters, all comments, and any featured articles will
+            be deleted.  If there are multiple authors attached to a book, any author can completely delete the book.  Please be careful, there is no
+            way to restore a book once it has been deleted.
+          </p>
+          <ul class="list">
+<?php $crows = 0;$offset = 1;while($row = $books->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'b');?>
+            <li>
+              <span class="big"><span><?php echo $offset++;?>.</span>&nbsp;<a href="../book.php?id=<?php echo $b_id?>"><?php echo $b_title?></a> by <?php echo group_concat($b_author, $b_authorid, 'author.php?', 'id', $nest, ' and ');?></span>
+              <span> Words: <?php echo $b_wordcount?> - Chapters: <?php echo $b_chapters?></span><span><a href="book.php?a=2&amp;id=<?php echo $b_id?>">Delete Book</a></span>
+              <br style="clear: both" />
+          </li>
+<?php endwhile;$books->close();?>
+          </ul>
+<?php endif?>

@@ -1,0 +1,40 @@
+<?php
+/**
+ * paging.html - tpl used every time a paging area is needed
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: paging.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <div class="dark small">
+<?php if(isset($prev) or isset($next) or isset($pages)):?>
+            <ul>
+<?php if(isset($prev) and $prev == TRUE):?>
+              <li><a href="<?php echo $querystring?>p=<?php echo $page - 1 ?>&amp;s=<?php echo $size?>">&lt;&lt; Previous</a></li>
+<?php endif?>
+<?php if(isset($pages) and is_array($pages)):foreach($pages as $num):if($page == $num):?>
+              <li><strong>[ <?php echo $num?> ]</strong></li>
+<?php else:?>
+              <li>[ <a href="<?php echo $querystring?>p=<?php echo $num?>&amp;s=<?php echo $size?>"><?php echo $num?></a> ]</li>
+<?php endif;endforeach;endif?>
+<?php if(isset($next) and $next == TRUE):?>
+              <li><a href="<?php echo $querystring?>p=<?php echo $page + 1 ?>&amp;s=<?php echo $size?>">Next &gt;&gt;</a></li>
+<?php endif?>
+            </ul>
+<?php endif?>
+            <ul>
+              <li>Per Page:</li>
+<?php if(!isset($sizes) or !is_array($sizes)){$sizes = array(5, 10, 15, 25, 50);}foreach($sizes as $num):?>
+              <li>[ <a href="<?php echo $querystring?>p=1&amp;s=<?php echo $num?>"><?php echo $num?></a> ]</li>
+<?php endforeach?>
+            </ul>
+          </div>

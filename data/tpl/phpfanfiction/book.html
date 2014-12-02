@@ -1,0 +1,48 @@
+<?php
+/**
+ * book.html - show book index and author notes
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: book.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+<?php extract($book, EXTR_PREFIX_ALL, 'b');?>
+          <h1><?php echo $b_title?></h1>
+          <h3>
+            by: <?php echo group_concat($b_author, $b_authorid, 'author.php?', 'id', $nest, ' and ');?> 
+          </h3>
+          <ol>
+<?php while($row = $chapter->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'c');?>
+            <li>
+              <span class="big"><a href="book.php?id=<?php echo $b_bookid?>&amp;c=<?php echo $c_id?>"><?php echo $c_title?></a></span>
+              <span>Published: <?php echo date_format($c_publish)?></span><span>Updated: <?php echo date_format($c_update)?></span><span>Words: <?php echo $c_wordcount?></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$chapter->close();?>
+          </ol>
+          <p class="dark small">
+            <a href="browse.php?a=2&amp;cid=<?php echo $b_catid?>"><?php echo $b_catname?></a> : <a href="browse.php?a=2&amp;sid=<?php echo $b_styleid?>"><?php echo $b_style?></a> :
+            <a href="browse.php?a=2&amp;tid=<?php echo $b_typeid?>"><?php echo $b_type?></a> : <?php echo group_concat($b_genre, $b_genreid, 'browse.php?a=2&amp;', 'gid', $nest, '/');?> :
+            <a href="browse.php?a=2&amp;rid=<?php echo $b_ratingid?>"><?php echo $b_rating?></a> : <?php echo group_concat($b_warning, $b_warningid, 'browse.php?a=2&amp;', 'wid', $nest, '/');?> :
+            <?php echo group_concat($b_character, $b_characterid, 'browse.php?a=2&amp;', 'chid', $nest, ', ');?> 
+          </p>
+          <div class="story">
+            <p><?php echo $b_summary?></p>
+            <hr />
+            Author Notes:
+            <?php echo indent(format($b_notes), 12)?> 
+          </div>
+          <p class="dark small">
+            Published: <?php echo date_format($b_publish)?> | Updated: <?php echo date_format($b_update)?> | Chapters: <?php echo $b_chapters?> |
+            Words: <?php echo $b_wordcount?> | <?php if($b_completed == 1){echo 'Completed';}else{echo 'Unfinished';}?> | <a href="comment.php?id=<?php echo $b_bookid?>">Comments: <?php echo $b_comments?></a> |
+            <?php echo rank_images($b_ranking, $nest)?> 
+          </p>

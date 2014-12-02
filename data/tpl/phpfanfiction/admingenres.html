@@ -1,0 +1,69 @@
+<?php
+/**
+ * admingenres.html - edit/new/list genres for admin
+ *
+ * This is released under the GPL, see license.txt for details
+ *
+ * @author       Elizabeth Smith <liz@phpfanfiction.com>
+ * @copyright    Elizabeth Smith @2004
+ * @link         http://phpfanfiction.com
+ * @license      http://www.opensource.org/licenses/gpl-license.php GPL
+ * @version      $Id: admingenres.html,v 1.1 2004/07/19 20:46:09 liz Exp $
+ * @requires     none
+ * @package      phpfanfiction
+ * @subpackage   core
+ * @category     tpl
+ */
+?>
+          <h1>Manage Genres</h1>
+          <ul>
+            <li>[<a href="library.php?a=0" title="Manage Categories">Categories</a>]</li>
+            <li>[<a href="library.php?a=1" title="Manage Ratings">Ratings</a>]</li>
+            <li>[<a href="library.php?a=2" title="Manage Styles">Styles</a>]</li>
+            <li>[<a href="library.php?a=3" title="Manage Types">Types</a>]</li>
+            <li>[<a href="library.php?a=4" title="Manage Characters">Characters</a>]</li>
+            <li>[<strong title="Manage Genres">Genres</strong>]</li>
+            <li>[<a href="library.php?a=6" title="Manage Warnnings">Warnings</a>]</li>
+          </ul>
+<?php if($total < 1):?>
+          <p class="error">
+            No Current Genres
+          </p>
+<?php else:?>
+          <ul class="list">
+<?php $num = 1; while($row = $genres->fetch_assoc()):extract($row, EXTR_PREFIX_ALL, 'g');?>
+            <li>
+              <span class="big"><span><?php echo $num++;?>.</span><?php echo $g_name?></span>
+              <span><a href="library.php?a=5&amp;id=<?php echo $g_id?>">Edit</a></span>
+              <span><a href="library.php?a=5&amp;did=<?php echo $g_id?>">Delete</a></span>
+              <br style="clear: both" />
+            </li>
+<?php endwhile;$genres->close();?>
+          </ul>
+<?php endif;?>
+<?php if(isset($error)):?>
+          <p class="error" style="clear: both">
+            <?php echo $error?> 
+          </p>
+<?php endif;?>
+<?php if(isset($edit)):extract($edit, EXTR_PREFIX_ALL, 'g');?>
+          <form action="library.php" method="post" style="clear: both">
+            <fieldset>
+              <legend>Edit Genre</legend>
+              <input type="hidden" value="5" name="a" />
+              <input type="hidden" value="<?php echo $g_id?>" name="id" />
+              <label for="genrename">Name:</label> <input id="genrename" name="name" type="text" value="<?php echo $g_name?>" />
+              <label for="genredesc">Description:</label> <textarea id="genredesc" name="description" cols="30" rows="5"><?php echo $g_description?></textarea>
+              <input type="submit" value="Edit Genre" name="edit" />
+            </fieldset>
+          </form>
+<?php endif?>
+          <form action="library.php" method="post" style="clear: both">
+            <fieldset>
+              <legend>New Genre</legend>
+              <input type="hidden" value="5" name="a" />
+              <label for="genrename">Name:</label> <input id="genrename" name="name" type="text" />
+              <label for="genredesc">Description:</label> <textarea id="genredesc" name="description" cols="30" rows="5"></textarea>
+              <input type="submit" value="Create Genre" name="new" />
+            </fieldset>
+          </form>
